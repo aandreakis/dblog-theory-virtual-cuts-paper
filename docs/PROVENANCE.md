@@ -51,12 +51,17 @@ materialize its run, so the accessor-agreement comparison it advertised was
 never actually reached. The control passed for the wrong reason. No theorem
 statement was affected, and no proof depended on it.
 
-Version 2.1 makes two changes and no others:
+Version 2.1 makes two changes to the theories:
 
 1. the control in `Layer3_Fixtures_Inst.thy` now materializes its run, so the
    comparison it advertises is genuinely exercised;
 2. a new kernel-checked theory `Layer3_Defect_Regressions.thy` pins that
    reachability permanently, so the defect cannot silently return.
+
+Four other files change with them: `ROOT` registers the new theory, `README.md`
+counts and lists it and carries the 2.1 release identification, and
+`document/root.tex` and `document/root.bib` name version 2.1. No other file
+differs between the 2.0 and 2.1 archives.
 
 The nine headline theorem statements are identical across 2.0 and 2.1. Readers
 of arXiv v2 should expect the repaired fixture and regression theory when they
