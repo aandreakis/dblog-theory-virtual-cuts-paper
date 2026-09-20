@@ -1,12 +1,11 @@
-% USENIX-like two-column systems-paper layout.
-% Hyperref / url / xcolor options must be set before the class line.
+% Set shared package options before the document class.
 \PassOptionsToPackage{unicode}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
 \PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
 \documentclass[letterpaper,10pt,twocolumn]{article}
 \usepackage{xcolor}
 
-% Geometry: 7 in x 9 in centered text block; 0.33 in column gutter.
+% Page geometry.
 \usepackage[
   letterpaper,
   textwidth=7in,
@@ -16,26 +15,16 @@
   headheight=14pt,
 ]{geometry}
 
-% Math.
+% Math packages.
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{newunicodechar}
 \usepackage{fvextra}
 \fvset{breaklines=true,breakanywhere=true,fontsize=\footnotesize,xleftmargin=0pt}
 \newunicodechar{↾}{\ensuremath{\upharpoonright}}
 
-% Paper-specific math macros (hybrid notation).
-%
-% PREDICATES / RELATIONS / CONSTRUCTORS render as short \mathsf{...}
-% abbreviations (visual cue: this is a relation or constant).  Each
-% abbreviation is introduced once in the \S5 notation table and
-% spelled out in the surrounding prose where helpful.
-%
-% ACCESSOR FUNCTIONS (return a value) render as italic descriptive
-% words via \mathit{...}.  Short, English, no underscores or hyphens
-% inside math.  Reader can read the math directly as English: "apply
-% prefix of R restricted to scope of R".
+% Notation: italic accessors and sans-serif predicates.
 \newcommand{\restrict}{\mathbin{\upharpoonright}}
-% Accessor functions (value-returning, italic):
+% Accessor functions.
 \newcommand{\Apply}{\mathit{apply}}
 \newcommand{\Src}{\mathit{src}}
 \newcommand{\Scope}{\mathit{scope}}
@@ -49,15 +38,10 @@
 \newcommand{\Chunks}{\mathit{chunks}}
 \newcommand{\SourceHistory}{\mathit{srcHistory}}
 \newcommand{\CdcEvents}{\mathit{cdcEvents}}
-% Variables / carriers (italic; not value-returning accessors).
-% Rendered like accessors but carry external observations or
-% schematic placeholders rather than computed values.
+% Observation carriers and schematic variables.
 \newcommand{\RawObs}{\mathit{raw}}
 \newcommand{\SinkState}{\mathit{sinkState}}
-% Predicates / relations / constants (sans-serif abbreviations).
-% Both the descriptive long-form macro names (\WellformedRun, ...) and
-% short aliases (\WF, \FSO, ...) expand to the same compact
-% \mathsf{...} symbol; either may be used in the body.
+% Predicates and short aliases.
 \newcommand{\WellformedRun}{\mathsf{WF}}
 \newcommand{\WF}{\mathsf{WF}}
 \newcommand{\FaithfulSourceObservation}{\mathsf{FSO}}
@@ -76,12 +60,12 @@
 \newcommand{\Accept}{\mathsf{Accept}}
 \newcommand{\Reject}{\mathsf{Reject}}
 \newcommand{\Unsupported}{\mathsf{Unsupported}}
-% Value tokens (roman; data-constructor values rather than predicates):
+% Value constructors.
 \newcommand{\None}{\mathrm{None}}
 
 \setcounter{secnumdepth}{5}
 
-% Font stack: newtx (Times-like serif + math); lmodern fallback.
+% Font stack: newtx with lmodern fallback.
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
@@ -103,70 +87,53 @@
   \UseMicrotypeSet[protrusion]{basicmath}%
 }{}
 
-% Paragraph rhythm: indented paragraphs, no big skip --- systems-paper style.
+% Paragraph layout.
 \setlength{\parindent}{1em}
 \setlength{\parskip}{0pt plus 0.5pt}
 \setlength{\emergencystretch}{3em}
-\raggedbottom            % natural column depth; avoids two-column flush-bottom glue stretching
+\raggedbottom            % Avoid stretching column height.
 
-% Hard rule: at most one float (figure*/figure/table*/table) per page.
-% LaTeX's defaults (topnumber=2, dbltopnumber=2, totalnumber=3) would
-% otherwise allow two wide floats to stack at the top of a page (e.g.,
-% Figure 1 + Table 1 doubling up on page 3), which reads as
-% float-crowding.  Setting all four placement-count counters to 1
-% enforces the one-float-per-page invariant at the kernel level.
+% Limit float stacking; ordinary and double-column floats use separate counters.
 \setcounter{topnumber}{1}
 \setcounter{bottomnumber}{1}
 \setcounter{totalnumber}{1}
 \setcounter{dbltopnumber}{1}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\dbltopfraction}{0.85}
 
-% Tables (two-column safe).  No longtable: it does not float and conflicts
-% with two-column body.  Wide tables use table* + tabularx + booktabs.
+% Tables for two-column layout. longtable is not used: it does not float
+% and conflicts with the two-column body.
 \usepackage{booktabs,array,tabularx,ragged2e}
 \newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
 \providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
-% Tight lists for narrow columns.
+% Lists for narrow columns.
 \usepackage{enumitem}
 \setlist{topsep=2pt,partopsep=0pt,parsep=2pt,itemsep=2pt,leftmargin=*}
 
-% Slightly more generous tolerances for two-column line-breaking.
+% Line-breaking tolerance for narrow columns.
 \tolerance=1500
 \hbadness=2000
 
 % Bibliography.
 \usepackage[numbers,sort&compress]{natbib}
 
-% Float barrier (avoid float pile-ups on the same page).
+% Float placement.
 \usepackage{placeins}
 
-% Section headers: prevent automatic hyphenation.  Article-class default
-% lets LaTeX hyphenate mid-word in section / subsection titles when a
-% title doesn't fit on one line (e.g., "Vir-/tual" or "Re-/striction").
-% raggedright on headings, plus maxed hyphenation penalties, leaves each
-% title-word intact and wraps as whole tokens instead.  Headings are
-% already left-aligned in the article class, so raggedright is a visual
-% no-op for fitting titles and only relaxes justification when wrapping.
+% Keep heading words intact when wrapping.
 \usepackage{sectsty}
 \allsectionsfont{\raggedright\hyphenpenalty=10000\exhyphenpenalty=10000}
 
-% Citation-order bibliography: the DBLog paper (andreakis2020dblog)
-% is cited first, in the Abstract, so unsrtnat puts it at position
-% [1]; the Netflix Tech Blog post (dblog_netflix_blog), first cited
-% in the Introduction, lands at [4] after the Abstract's Debezium
-% and Flink CDC citations.  natbib is loaded with the [numbers]
-% option above, so in-text \citep renders numerically ("[1]"),
-% not author-year.
+% Numbered references in citation order.
 \bibliographystyle{unsrtnat}
 
-% Hyperref (load late) + URL hygiene.
+% Load hyperlinks late.
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{}
 \urlstyle{same}
-% Allow more flexible URL breaks in narrow 2-column layout (avoid hanging URLs).
-% Stretch between URL atoms; xurl already provides /, ., -, ?, = break-points.
+% Allow URL breaks within narrow columns.
 \Urlmuskip=0mu plus 1mu\relax
-% Extend hyphenation penalty for URLs so xurl breaks at slashes/dots, not mid-letter.
 \renewcommand{\UrlBreaks}{\do\.\do\@\do\/\do\\\do\!\do\_\do\|\do\;\do\>\do\]%
   \do\)\do\,\do\?\do\&\do\=\do\#\do\:\do\-\do\~\do\'%
   \do\+\do\(\do\[\do\{\do\}\do\<\do\"\do\*\do\$\do\%}
@@ -175,19 +142,14 @@
   pdfauthor={Andreas Andreakis},
   hidelinks}
 
-% ------------------------------------------------------------------
-% Figure-rendering stack (Set A figures, original development source
-% at paper/figures/set_a_architectural/fig0{1..5}_*/figXX.tex; the
-% live build-input copies are at figures/fig0{1..5}_*/figXX.tex
-% next to this file).
-% ------------------------------------------------------------------
+% TikZ figures and shared styles.
 \usepackage[normalem]{ulem}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,decorations.pathreplacing,decorations.markings,%
                 positioning,calc,shapes.geometric,shapes.misc,fit,%
                 backgrounds,patterns,matrix,quotes}
 
-% Shared palette + tikzset, used by all five figures.
+% Shared figure palette.
 \definecolor{gDark}{HTML}{3A3A3A}
 \definecolor{gMid}{HTML}{6A6A6A}
 \definecolor{gLight}{HTML}{A6A6A6}
@@ -241,162 +203,124 @@
   sublabelDim/.style={font=\sffamily\scriptsize\itshape, text=gMid},
 }
 
-% ------------------------------------------------------------------
-% Two-column title block.
-% ------------------------------------------------------------------
-\title{A Theoretical Study of DBLog}
-\newcommand{\papersubtitle}{Certified Virtual Cuts for a Snapshot-Equivalent Replay of Live Databases}
-\newcommand{\paperauthor}{Andreas Andreakis}
+% Keep the complete title and author in \title and \author: arXiv's HTML
+% conversion reads those two fields and ignores the \maketitle
+% redefinition below.
+\title{A Theoretical Study of DBLog: Certified Virtual Cuts for a Snapshot-Equivalent Replay of Live Databases}
+\author{Andreas Andreakis}
 
 \makeatletter
 \renewcommand{\maketitle}{%
   \twocolumn[{%
     \begin{center}
       {\LARGE\bfseries \@title\par}
-      \vspace{0.35em}
-      {\large \itshape \papersubtitle\par}
       \vspace{1.1em}
-      {\large \paperauthor\par}
+      {\large \@author\par}
     \end{center}
     \vspace{1.5em}
   }]%
   \thispagestyle{plain}%
 }
 \makeatother
-\author{}
 \date{}
 
 \begin{document}
 \maketitle
 
-% --- LAYOUT INVARIANT: SINGLE-COLUMN ABSTRACT ---
-% The abstract block (this section plus the Keywords block, up to
-% \section{Introduction}) MUST fit within the first (left) column on
-% page 1.  It must NOT overflow into the second column, which is
-% reserved for the start of section 1 (Introduction).
-%
-% After ANY edit to the abstract or keywords block:
-%   1. Rebuild:  latexmk -pdf main.tex
-%   2. Open the rendered PDF and visually verify page 1:
-%        the right (second) column begins with "1 Introduction"
-%        (or its body), NOT a continuation of the abstract.
-%
-% A failed check blocks the slice close.
-% Codified at slice post-V332-abstract-single-column-restore (V-333)
-% after V-319/V-326/V-328 silently pushed the abstract past the
-% column boundary.  Binding: see DECISIONS.md D-057.
+% Keep the abstract in the first column, with the introduction directly below.
 \section*{Abstract}\label{abstract}
 
-DBLog is a change-data-capture (CDC) mechanism for copying a whole table
-or selected keys from a live source database while continuing to stream
-new changes. It reads the table in primary-key ordered chunks and brackets
-each chunk with watermarks in the source log. Rows returned by
-a chunk become refresh events. CDC events that are newer than a refresh
-prevent stale chunk values from becoming the final replay result. This
-approach allows backfills that can run at any time, and not only
-initially, while source writes and live change capture continue. It was
-introduced in the 2020 DBLog
-paper~\citep{andreakis2020dblog} and is now used in
-Debezium~\citep{debezium_incremental_snapshot} and Apache Flink
-CDC~\citep{flink_cdc_incremental_snapshot}.
+DBLog is a change-data-capture (CDC) mechanism for copying a table or
+selected keys from a source database while continuing to stream new changes
+from its commit log. It reads a table in primary-key ordered chunks and 
+brackets each read with low and high watermarks in the source log. A chunk
+row is discarded if a log event for the same key appears anywhere in that
+window. The remaining rows are emitted as refresh events after the high
+watermark. DBLog allows backfills to run at any time during normal operation,
+rather than only as an initial bootstrap, while writes and live capture
+continue. It was introduced in the 2019 Netflix Tech Blog
+post~\citep{dblog_netflix_blog} and further discussed in the 2020 DBLog
+paper~\citep{andreakis2020dblog}. The mechanism has since been adopted by
+open-source projects, including Debezium~\citep{debezium_incremental_snapshot}
+and Apache Flink CDC~\citep{flink_cdc_incremental_snapshot}.
 
-Because chunks are read at different source-log positions, their rows
-do not form one physical snapshot. The 2020 paper described the mechanism
-operationally but left the state reconstructed by its replay implicit.
-We now formalize that state as a \textbf{virtual cut}: replaying
-a finite prefix produces the same per-key state as the source at a chosen
-frontier on a chosen scope. A \textbf{certified virtual cut} packages this
-equality in a certificate and evidence bundle carrying the source
-observations needed to check it. This achieves a snapshot-equivalent
-replay without taking a single physical snapshot. The equivalence is in
-the replay outcome at the chosen frontier and scope, not in a source
-timestamp shared by all chunk rows.
+The original blog post and paper explained this mechanism but did not provide
+a formal correctness proof or a precise description of its replay result. In
+this paper, we formalize how chunk reads and log events are
+combined and prove that their replay reconstructs the source state up to a
+specific log position for the keys being copied. We define this as a
+\textbf{virtual cut}, representing a snapshot-equivalent replay without
+requiring a physical snapshot. DBLog emits the events needed to reconstruct 
+the source state downstream, without storing that state itself.
 
-We prove that every wellformed DBLog run produces a virtual cut and that,
-under faithful source observation and the stated checker assumptions, an
-accepted certificate witnesses one. A whole-table result follows under
-additional coverage conditions. We also prove that a cut advances to later
-frontiers by appending the source CDC events for keys in scope committed in
-between, and that it can be restricted to smaller scopes.
-The results do not establish exactly-once delivery, destination-state
-convergence, or correctness of any named deployment. All proofs are
-machine-checked in Isabelle/HOL.
-
-\smallskip
-\noindent\textbf{Keywords.}\label{keywords}\enspace
-databases, distributed systems, \mbox{online backfill},
-change-data-capture, formal verification, Isabelle/HOL.
+To verify executions independently, we provide a certificate that validates
+this equivalence from recorded log evidence and chunk observations. Once chunk 
+processing completes and covers all keys, this guarantee extends to the whole table. 
+Furthermore, appending subsequent change-stream events advances the cut forward, 
+formalizing the seamless transition from historical backfill to live streaming. 
+All definitions and proofs are mechanized in Isabelle/HOL.
 
 \section{Introduction}\label{introduction}
 
-DBLog was introduced in the Netflix Tech Blog in
-2019~\citep{dblog_netflix_blog} and described in the 2020 DBLog
-paper~\citep{andreakis2020dblog}. It is a change-data-capture (CDC)
-mechanism for backfilling a downstream system from a live source
-database while continuing to stream new changes. DBLog reads the table
-in primary-key chunks. A low and a high watermark place each chunk read
-in source-log order. Rows returned by the chunk become refresh events,
-while ordinary CDC events preserve changes that occur during the
-backfill and replace stale refresh values. Variants of this mechanism
-are now used by Debezium~\citep{debezium_incremental_snapshot} and
-Apache Flink CDC~\citep{flink_cdc_incremental_snapshot}, where the
-backfill phase is called an \emph{incremental snapshot}.
-
-This work is a theoretical follow-up. It assumes basic familiarity with
-the DBLog mechanism and does not repeat its full engineering design.
-Readers new to DBLog should begin with the 2020 paper or the blog post.
-Section~2 provides the operational detail needed
-for the formal development.
+DBLog, introduced in the Netflix Tech Blog in 2019~\citep{dblog_netflix_blog} 
+and described in the 2020 DBLog paper~\citep{andreakis2020dblog}, is a 
+change-data-capture (CDC) mechanism for backfilling a downstream system from a
+source database while continuing to stream new changes. DBLog reads the 
+table in primary-key chunks and brackets each chunk read between low and high 
+watermarks in the source log. The watermarks bracket the read without
+knowing its exact source-log position. DBLog then discards any chunk row
+whose key collides with a CDC event anywhere within that window to ensure
+that refresh events don't override more recent CDC events. CDC events
+retain their source order, and the remaining chunk rows are emitted as
+refresh events after the high watermark. Variants of this mechanism are now used by
+Debezium~\citep{debezium_incremental_snapshot} and Apache Flink 
+CDC~\citep{flink_cdc_incremental_snapshot}, where the backfill phase 
+is called an \emph{incremental snapshot}.
 
 The mechanism was designed to allow backfills at any time, not only
-initially, without stalling the flow of change events and while minimizing
-the impact on the source database. A backfill can run during normal
-operation, cover an entire table or selected keys, and pause or resume
-between chunks. This lets operators control the scope and pace of the
-work without stalling live change capture. A conventional dump or
-blocking snapshot may be a better option if completing the backfill as
-quickly as possible has priority.
+initially, without interrupting the flow of change events. A backfill 
+can run during normal operation, cover an entire table or selected keys, 
+and pause or resume between chunks. This lets operators control the 
+scope and pace of the work without stalling live capture.
 
-Reading the table in chunks while source writes continue creates a
-correctness question. Each chunk is read at its own source-log
-coordinate, and writes may commit between
-chunk reads. Some rows may therefore be stale by the time the backfill
-reaches the frontier it intends to reproduce. No physical snapshot
-describes all rows observed by the chunk reads. We study whether the
-events collected by DBLog can nevertheless be replayed to the same
-per-key state as the source at a chosen frontier on a chosen key scope.
-We also study how that equality changes when the source commits later
-events.
+Because chunks are read at distinct source-log positions, intermediate writes 
+at the source can render individual row observations stale. The collected chunk reads
+ do not form a single physical snapshot. We establish that DBLog's 
+combination of chunk refreshes and change events nonetheless reconstructs 
+the exact per-key state of the source at a designated commit-log frontier, 
+and we prove how that equivalence advances forward as the source commits 
+subsequent writes.
 
-The 2020 publications explained operationally why watermark bracketing
-and stale-row suppression preserve the latest state. They did not state
-the reconstructed state as a formal object or provide a machine-checked
-proof. We supply that formalization.
+While the original 2020 paper explained how the mechanism works operationally, 
+it did not formalize the reconstructed database state or provide a proof. 
+We supply that foundation by formalizing how chunk observations and captured
+changes are combined and proving that their replay reconstructs the source
+state. We characterize this result through the concept of a
+\textbf{virtual cut}. A
+\textbf{virtual cut} formalizes snapshot equivalence: replaying the sequence 
+of chunk observations and streaming writes gathered during a backfill produces 
+the exact state of the source database at a specific commit-log coordinate, for 
+every key in the targeted scope. The cut is \emph{virtual} because rows were read 
+at different times without taking a physical snapshot. A \textbf{certified virtual cut} 
+packages this claim into an inspectable certificate, allowing an independent checker 
+to verify that the replay matches the source from recorded log watermarks and chunk 
+reads.
 
-The central object is a \textbf{virtual cut}. A virtual cut is an
-equality between two outcomes. On one side is the state obtained by
-applying a finite DBLog replay prefix. On the other side is the source
-state at a chosen frontier. The equality is restricted to the claimed
-key scope. A \textbf{certified virtual cut} packages this claim in a
-certificate whose evidence identifies the source observations, chunk
-reads, frontier, scope, and replay prefix used to justify it. The word
-\emph{virtual} is important because the equality concerns the resulting
-state. It does not imply that all chunk rows were read at one source
-timestamp.
-
-The proof is organized in five layers. Layers~0 and~1 define source
-histories, replay events, abstract DBLog runs, and the conditions for a
-wellformed run. Layer~2 proves that every wellformed run produces a
-virtual cut at its frontier and scope. Layer~3 connects this run-level
-result to an accepted certificate under faithful source observation and
-the stated checker assumptions. Layer~4 derives whole-table equality
-when the certificate also covers the anchor domain, every key touched
-after the anchor, the required frontier order, and every key written by
-the replay. The watermark mechanics enter as premises, including the
-single-coordinate attribution of each chunk read described in
-Section~\ref{watermarks-and-chunk-read-coordinates}. They are not
-derived by the abstract model. Figure~\ref{fig:theorem-ladder}
-summarizes these dependencies. Every theorem is machine-checked in the
+The proof is organized in five layers. Layers~0 and~1 define source 
+histories, replay events, and abstract DBLog runs characterized 
+by a scope (the targeted set of primary keys) and a frontier 
+(the designated commit-log coordinate), alongside the conditions for a 
+wellformed run. Layer~2 proves that every wellformed run produces a 
+virtual cut at that frontier on that scope. Layer~3 lifts this 
+guarantee to inspectable certificates, showing that an independent 
+checker can verify the cut directly from recorded log evidence. 
+Layer~4 derives full whole-table equality, establishing the 
+coverage conditions needed to prove that all existing rows and 
+concurrent writes across the table are accounted for. The watermark 
+mechanics enter as assumptions, including the single-coordinate 
+attribution of each chunk read described in Section~\ref{watermarks-and-chunk-read-coordinates}. 
+They are not derived by the abstract model. Figure~\ref{fig:theorem-ladder} 
+summarizes these dependencies. Every theorem is machine-checked in the 
 companion Isabelle/HOL development, archived at
 \url{https://doi.org/10.5281/zenodo.21732790}.
 
@@ -409,20 +333,17 @@ chunk loop completes, DBLog continues consuming ordinary CDC events. We
 prove that appending exactly the source events for keys in scope between
 frontiers $f$ and $f'$ advances a cut at $f$ to a cut at $f'$. We also
 prove that a cut on one scope remains valid when restricted to a smaller
-scope. Disjoint composition, concrete verification of extended
-certificates, and normalization of overlapping or retried chunks remain
-future work. Applied destination-state correctness also remains outside
-the current result. It requires a separate sink model with ordered and
-idempotent application, fencing, and visible apply-barrier evidence.
+scope. Normalization of overlapping or retried chunks, and sink state 
+correctness remain future work.
 
-The theorems assume an ordered source log retained through the claimed
-frontier, valid coordinates for chunk observations, complete scope
-coverage, and faithful preservation of required source events and their
-order. Certificate acceptance checks internal consistency, not whether
-a connector reported the real source history. The results are
-source-side and scoped unless the Layer~4 conditions hold. They do not
-establish exactly-once delivery, destination state, verifier
-correctness, or correctness of a named deployment.
+The theorems assume that the source log is retained through the claimed frontier, 
+each chunk read captures its rows at a single commit-log position, and the CDC 
+stream delivers all intermediate change events in committed order. A certificate 
+checker verifies that this recorded evidence is internally consistent, but cannot 
+determine whether an external connector observed the physical database accurately. 
+These guarantees are strictly source-side and scoped to the backfilled keys,
+with whole-table equality following under the Layer~4 conditions. 
+They do not assert downstream sink convergence or exactly-once delivery.
 
 Section~2 develops a running example and Section~3 reviews the mechanism
 used by the model. Section~4 summarizes the claims and limitations.
@@ -433,10 +354,10 @@ convergence. Sections~13 through~15 cover related work, future
 extensions, and verification methodology.
 
 We use five status labels throughout
-(Table~\ref{tab:status-vocab}):
+(Table~\ref{tab:status-vocab}).
 
 \begin{table*}[t]
-\caption{Reader-facing status vocabulary used throughout the paper.}
+\caption{Status vocabulary used throughout the paper.}
 \label{tab:status-vocab}
 \centering\small
 \begin{tabularx}{\textwidth}{@{}lY@{}}
@@ -445,14 +366,14 @@ We use five status labels throughout
 \midrule
 Machine-checked &
   The claim is proved in the companion Isabelle/HOL development, under
-  premises stated where the claim appears. The paper gives the proof
+  the assumptions stated where the claim appears. The paper gives the proof
   idea or proof explanation in the body.\\
 Deployment obligation &
   The operator or implementation must establish this condition in a
   deployment.\\
 External observation assumption &
-  The source-side observation is assumed faithful. The model cannot
-  prove it from the certificate alone.\\
+  The source-side observation is assumed accurate (satisfying $\FSO$).
+  The model cannot prove it from the certificate alone.\\
 Future work &
   A named extension or theorem path that this paper does not claim.\\
 Non-claim &
@@ -461,11 +382,11 @@ Non-claim &
 \end{tabularx}
 \end{table*}
 
-Each theorem states its premises directly. These labels distinguish the
+Each theorem states its assumptions directly. These labels distinguish the
 machine-checked result from conditions supplied by a deployment or its
 source connector.
 
-\section{Bootstrapping and Advancing a Virtual Cut: A Running
+\section{Bootstrapping and Advancing a Virtual Cut with a Running
 Example}\label{bootstrapping-and-advancing-a-virtual-cut}
 
 We begin with a concrete backfill before introducing the formal model.
@@ -480,13 +401,13 @@ definitions.
 
 \subsection{Setup}\label{setup}
 
-A source database carries a single table:
+The source database contains an account table
 
 \begin{center}\ttfamily\small
 accounts(account\_id, balance)
 \end{center}
 
-with two live rows at the moment the example starts:
+initially populated with two rows:
 
 \begin{center}\footnotesize
 \begin{tabular}{@{}l@{\hskip 1em}l@{\hskip 1em}l@{}}
@@ -506,8 +427,8 @@ the chunk reads occur at different source-log coordinates.
 \subsection{What the Source Log Records During the Backfill
 Window}\label{what-the-source-log-records-during-the-backfill-window}
 
-While DBLog is working, four committed writes land in the source log in
-this order:
+While DBLog is working, four writes commit in the source log in
+the following order:
 
 \begin{center}\footnotesize
 \begin{tabular}{@{}l@{\hskip 1em}l@{\hskip 1em}l@{}}
@@ -518,14 +439,10 @@ this order:
 \end{tabular}
 \end{center}
 
-Each c\textsubscript{i} is a source-log coordinate, a position in the
-source database's commit order. We will not need anything more precise
-than ``$c_1$ happened before $c_2$, which
-happened before $c_3$, which happened before
-$c_4$.''
+Each $c_i$ denotes a source-log coordinate representing a position in
+the source database's commit order, where $c_1 < c_2 < c_3 < c_4$.
 
-By the time $c_4$ commits, the source state on these three
-accounts is:
+After $c_4$ commits, the source state across these three accounts is
 
 \begin{center}\footnotesize
 \begin{tabular}{@{}l@{\hskip 1em}l@{\hskip 1em}l@{}}
@@ -535,12 +452,11 @@ accounts is:
 \end{tabular}
 \end{center}
 
-That is the per-account state we want the assembled replay to
-reconstruct.
+The assembled replay must reconstruct this per-account state.
 
 \subsection{What the Chunks Read}\label{what-the-chunks-read}
 
-DBLog reads the table while source writes continue. It splits the table
+DBLog reads the table while source writes continue. It partitions the table
 into two \textbf{chunks} by primary key range:
 
 \begin{itemize}
@@ -552,17 +468,17 @@ into two \textbf{chunks} by primary key range:
 \end{itemize}
 
 The two chunk ranges are disjoint, and together they cover every
-account the backfill claims. How the key space is split into chunks is
-a parameter chosen by the deployment, not something DBLog infers. A
-chunk may also cover keys that do not exist in the table yet: chunk B
-covers account 300 before Carol has opened it.
+account the backfill claims. Key partitioning is configured by the
+deployment rather than inferred by DBLog. Chunks can also cover keys
+that do not yet exist in the table. For instance, chunk B covers
+account 300 before Carol opens it.
 
-Each chunk is read at its own moment in source-log time. That a
-multi-row chunk read counts as a read at one such coordinate is itself
-a deployment obligation, made precise in
+Each chunk is read at its own moment in source-log time. The
+deployment must ensure that a multi-row chunk read reflects a single
+source-log coordinate, an obligation made precise in
 Section~\ref{watermarks-and-chunk-read-coordinates}.
 
-\textbf{Chunk A} runs at coordinate $c_1$, so its read sees
+\textbf{Chunk A} runs at coordinate $c_1$, observing
 the state immediately after $c_1$'s update committed:
 
 \begin{center}\footnotesize
@@ -573,8 +489,8 @@ the state immediately after $c_1$'s update committed:
 \end{tabular}
 \end{center}
 
-\textbf{Chunk B} runs later, at coordinate $c_3$, so its
-read sees Carol's row after Carol's $c_2$ insert but before
+\textbf{Chunk B} runs later, at coordinate $c_3$, observing
+Carol's row after Carol's $c_2$ insert but before
 Carol's $c_4$ update:
 
 \begin{center}\footnotesize
@@ -588,39 +504,42 @@ The two chunks run at different source-log moments. No single physical
 snapshot of the table has been taken. Chunk A saw Bob at \$100. By the
 time chunk B was reading, Bob's balance had already moved to \$120.
 
-Both chunk reads here find their rows present, but a chunk read can
-equally record a key as \emph{absent}: had chunk B run before Carol's
-$c_2$ insert, it would have observed account 300 not yet in the table,
-and that observed absence is replayed like any observed value.
+Although both chunk reads observe live rows here, a chunk read can
+also record a key as \emph{absent}. If chunk B had executed before Carol's
+$c_2$ insert, it would have observed account 300 as absent,
+and that recorded absence is replayed identically to a concrete value.
 
 \subsection{The Chosen Point of
 Equivalence}\label{the-chosen-point-of-equivalence}
 
 The backfill targets a specific source-log moment for the assembled
-replay to match. We pick
-\textbf{frontier $f = c_4$}: the source-log position
+replay to match. We designate
+\textbf{frontier $f = c_4$}, representing the source-log position
 immediately after the last write in the sequence. The \textbf{scope} of the
-backfill is the set of accounts we are claiming: $K = \{100, 200, 300\}$
+backfill comprises the claimed accounts, $K = \{100, 200, 300\}$
 (Alice, Bob, Carol).
 
 Deterministic replay of the gathered events equals the source state at
 $f$ on $K$, although no chunk is read at $f$, the three accounts are
 never read together, and source writes continue throughout.
 
-\subsection{How DBLog Assembles the
+\subsection{How the Model Assembles the
 Replay}\label{how-dblog-assembles-the-replay}
 
-DBLog treats every observed source-log event as an ordinary
+The model treats every observed source-log event as an ordinary
 \textbf{CDC event} (the captured record of one committed source
-write: an insert, update, or delete at its source-log coordinate),
+write, such as an insert, update, or delete at its source-log coordinate),
 every chunk-read row as a \textbf{refresh event}, and concatenates them
 in source-log order. Such an event is a \emph{refresh} because it
 re-states a key's current stored value, read directly from the table,
-rather than reporting an incremental change as a CDC event does. For
-our example the assembled replay sequence is:
+rather than reporting an incremental change as a CDC event does.
 
-% This 7-row replay tabular has the longest content of any §3 block;
-% kept at \scriptsize (vs \footnotesize for the others) to fit the 2-column width.
+This raw replay retains every chunk refresh at its attributed read
+coordinate. Section~\ref{watermarks-and-chunk-read-coordinates} explains
+its relationship to DBLog's window-based suppression and output order.
+For our example the assembled replay sequence is:
+
+% Compact type keeps the replay table within one column.
 \begin{center}\ttfamily\scriptsize
 \begin{tabular}{@{}r@{\hskip 0.4em}l@{\hskip 1em}l@{}}
 1. & CDC at c1:                  & Update account 100 $\to$ 3000\\
@@ -642,19 +561,19 @@ coordinate already reflects every write committed at that coordinate.
 Figure~\ref{fig:running-example-timeline}
 places these chunk reads and CDC events on the source-log timeline.
 
-This is the \textbf{raw replay} form: it shows the chunk refreshes DBLog
+This is the \textbf{raw replay} form. It shows the chunk refreshes DBLog
 gathered even when a later CDC event for the same key supersedes them.
-The normalized clean prefix may drop dominated refreshes such as item 3
-for account 200 and item 6 for account 300, but $\Apply$ produces the same
-final per-key state from the raw and normalized forms. The raw sequence
-shows what DBLog observed. The normalized sequence makes stale-refresh
-suppression explicit and is useful in the formal model.
+The normalized clean prefix may omit refreshes dominated by later CDC
+events, such as item~3 for account 200 and item~6 for account 300. Applying
+either the raw or the normalized form yields the same per-key state. The raw sequence
+shows what DBLog observed, while the normalized sequence makes stale-refresh
+suppression explicit for the formal model.
 
 To reconstruct per-account state, we play the seven raw items left to
 right, each one writing the per-account map. When two items concern the
 same account, the later one wins for that account's value.
 
-Walking through:
+Tracing the replay sequence in order:
 
 \begin{itemize}
 \tightlist
@@ -669,20 +588,18 @@ Walking through:
   Item 4 introduces account 300 at 2500.
 \item
   Item 5 sets account 200 to 12000. This overrides chunk A's earlier
-  observation of account 200: chunk A saw \$100 because it read at
-  $c_1$, but the $c_3$ log event is newer and
-  authoritative.
+  observation: chunk A observed balance \$100 at $c_1$, which the later
+  log update at $c_3$ (\$120) supersedes.
 \item
   Item 6, chunk B's refresh of account 300, confirms 300 = 2500. No
   change yet.
 \item
   Item 7 sets account 300 to 3500. This overrides chunk B's earlier
-  observation of account 300: chunk B saw \$25 because it read at
-  $c_3$, but the $c_4$ log event is newer and
-  authoritative.
+  observation: chunk B observed \$25 at $c_3$, which the update at
+  $c_4$ (\$35) likewise overrides.
 \end{itemize}
 
-The final per-account state, restricted to scope $K = \{100, 200, 300\}$:
+The final per-account state, restricted to scope $K = \{100, 200, 300\}$, is
 
 \begin{center}\ttfamily\footnotesize
 \begin{tabular}{@{}l@{\hskip 1em}l@{}}
@@ -692,8 +609,7 @@ account 300 & balance = \phantom{0}3500\\
 \end{tabular}
 \end{center}
 
-Compare against the source state at $f = c_4$ restricted to
-$K$:
+The source state at $f = c_4$ restricted to $K$ is
 
 \begin{center}\ttfamily\footnotesize
 \begin{tabular}{@{}l@{\hskip 1em}l@{}}
@@ -703,24 +619,23 @@ account 300 & balance = \phantom{0}3500\\
 \end{tabular}
 \end{center}
 
-They match. The assembled replay reproduces the source state at $f$ on
-every account in the scope $K$, even though chunk A and chunk B each read
-at a different earlier moment, and even though one of chunk A's
-observations and chunk B's only observation were both already stale by
-the time $f$ was reached.
+They match. The assembled replay reproduces the source state at $f$
+across all accounts in scope $K$, even though chunk A and chunk B were read
+at distinct earlier coordinates, and even though both chunks contained rows
+that had become stale before reaching $f$.
 
 \subsection{Advancing the Cut to a Later
-Frontier}\label{continuation-beat-advancing-the-cut}
+Frontier}\label{sec:advancing-cut-running-example}
 
-The seven-item replay above is a virtual cut at one frontier: applying
-it reaches the source state at $f = c_4$ on the scope
-$K = \{100, 200, 300\}$. A DBLog deployment does not stop there. The
-chunk loop has closed: every chunk in the plan has been read once
-(here, chunks A and B), and no further chunk reads will occur.
-However, the source keeps committing writes and DBLog keeps consuming
-the source log, so the cut can be advanced.
+The seven-item replay above forms a virtual cut at frontier $f = c_4$
+on scope $K = \{100, 200, 300\}$, matching the source state at that
+point. Backfill operations are not restricted to this initial cut.
+Once all chunks in the plan have been processed (here, chunks A and B),
+chunk scanning terminates.
+However, as the source continues committing writes, DBLog keeps consuming
+the source log, allowing the cut to advance.
 
-Suppose one more write lands after $c_4$:
+Suppose another write commits after $c_4$:
 
 \begin{center}\footnotesize
 \begin{tabular}{@{}l@{\hskip 1em}l@{\hskip 1em}l@{}}
@@ -731,10 +646,10 @@ Suppose one more write lands after $c_4$:
 DBLog does not re-read a chunk to account for this change. The single
 CDC event committed after $c_4$ and through $c_5$ is the
 \emph{continuation segment} for that interval. Appending that segment
-advances the cut, provided that the CDC feed delivers it faithfully and
+advances the cut, provided that the CDC feed delivers it accurately and
 the source log still retains the interval. Section~\ref{source-side-continuation-and-restriction}
 states these conditions precisely.
-The replay gains one item:
+The replay sequence gains one event:
 
 \begin{center}\ttfamily\footnotesize
 \begin{tabular}{@{}r@{\hskip 0.4em}l@{\hskip 1em}l@{}}
@@ -755,9 +670,10 @@ one event the source committed in between. No chunk was re-read. Had
 that event been an ordinary insert or update rather than a delete, it
 would have appended in exactly the same way. This is
 the running example's instance of the continuation result of
-Section~\ref{source-side-continuation-and-restriction}: ongoing DBLog
-operation is a sequence of virtual cuts, each later cut the earlier one
-extended by the source's faithful change data.
+Section~\ref{source-side-continuation-and-restriction}. Ongoing DBLog
+execution thus produces an evolving sequence of virtual cuts, where each
+successive cut advances the prior state by appending committed source
+changes.
 
 This says nothing, by itself, about whether a destination consuming the
 replay has applied item 8 or reached the state in which account 200 is
@@ -768,8 +684,7 @@ absent. That remains a separate sink-side question
   \input{figures/fig02_running_example_timeline/fig02.tex}
 \end{figure*}
 
-\subsection{What ``Snapshot-Equivalent'' Means
-Here}\label{what-snapshot-equivalent-means-here}
+\subsection{What ``Snapshot-Equivalent'' Means}\label{what-snapshot-equivalent-means-here}
 
 At no point in this example did DBLog read the entire table at one
 source-log position. Chunk A saw account 100 and account 200 at
@@ -778,12 +693,11 @@ happened at different points in the source database's commit order,
 DBLog must reconcile them through the source log rather than read them
 as one instantaneous observation.
 
-What DBLog \emph{does} have is enough source-log evidence around each
-chunk read to know which observations are still authoritative at the
-chosen frontier and which have been superseded. That is the content of
-the assembled replay sequence above: a deterministic mix of chunk-read
-refreshes and CDC events that, taken together, have the same per-key
-replay outcome as the source state at $f$ on the scope $K$.
+Instead, DBLog captures sufficient source-log evidence around each
+chunk read to determine which observations remain authoritative at the
+chosen frontier and which have been superseded. The assembled replay
+sequence combines chunk refreshes and CDC events deterministically to
+yield the exact per-key state of the source at frontier $f$ on scope $K$.
 
 In this paper, \emph{snapshot-equivalent replay} means that the replay
 outcome equals the source state at $f$ restricted to $K$. It does not
@@ -792,7 +706,7 @@ mean that DBLog performed a physical snapshot read.
 \subsection{Scope of the Example}\label{what-this-example-does-not-show}
 
 The example covers one three-key backfill. It establishes replay
-equality for that scope, but it does not establish the following:
+equality for that scope, but it does not extend to the following properties:
 
 \begin{itemize}
 \tightlist
@@ -819,8 +733,7 @@ equality for that scope, but it does not establish the following:
 \subsection{Required Coordination}\label{what-coordination-dblog-still-needs}
 
 Avoiding a physical snapshot read does not remove the need for
-coordination. The example relies on the following source-side
-conditions:
+coordination. The example relies on four source-side conditions:
 
 \begin{itemize}
 \tightlist
@@ -833,25 +746,24 @@ conditions:
   rule cannot be applied.
 \item
   \textbf{Chunk-read watermarks} placed in the source log around each
-  chunk read, so DBLog can locate chunk A's read in source-log order:
-  the bracket places its observation of account 200 before the $c_3$
-  event for account 200, so that event is recognized as strictly newer.
-  The example treats the chunk-read coordinate as known. The
-  source-side mechanism that makes it known is the watermark bracket,
-  made precise in the next section.
+  chunk read, allowing DBLog to locate chunk A's read in source-log order.
+  The watermark bracket places its observation of account 200 before the $c_3$
+  event for account 200, identifying the event as strictly newer.
+  The watermark bracket bounds the read's position in source-log order,
+  as described in the next section.
 \item
-  \textbf{Source-log retention}: the source log must still carry
-  $c_1$ through $c_4$ when DBLog assembles the
-  replay. If the log had truncated $c_1$ before chunk A was
-  reconciled, the assembled replay would have a gap and DBLog would not
-  be able to claim the scope $K$ up to $f$.
+  \textbf{Source-log retention.} The source log must retain each
+  required event until DBLog has captured it. If the $c_3$ update to
+  account 200 were lost before it was captured, Bob's stale chunk value
+  would survive and the replay would not match the source at $f$.
 \item
-  \textbf{Chunk-read consistency}: chunk A's two rows must both reflect
+  \textbf{Chunk-read consistency.} Chunk A's two rows must both reflect
   the source at the single coordinate $c_1$. The watermark bracket
   locates the read in source-log order but does not by itself
-  establish that single-coordinate attribution. A consistent
-  statement-level read, or per-row coordinate evidence, is what the
-  deployment must supply.
+  establish that single-coordinate attribution. The deployment must
+  establish this property, through a consistent statement-level read or
+  through per-row evidence that all returned row images match one
+  common source coordinate.
   Section~\ref{watermarks-and-chunk-read-coordinates} makes this
   obligation precise.
 \end{itemize}
@@ -888,78 +800,94 @@ a table, a shard, a tenant, or a selected key range.
 
 The scope is partitioned into \textbf{chunks}. The chunks are pairwise
 disjoint and together cover the claimed scope. Each key in the scope
-therefore belongs to one responsible chunk. The deployment chooses the
+therefore belongs to exactly one chunk. The deployment chooses the
 chunk ranges, and the model takes that plan as an input. A chunk may
-also cover keys that do not yet exist in the table. An observed absence
-within the chunk range is evidence in the same way as an observed value.
+also cover keys that do not yet exist in the table. An observed key absence
+within a chunk range is recorded as evidence just like an existing row.
 
 Unique ownership is required by the current model. If two chunks own
-the same key, or if no chunk owns a key in scope, the replay lacks one
-defined source for that key's refresh. Overlapping and retried chunks
+the same key, or if no chunk owns a key in scope, the replay lacks a
+uniquely defined refresh source for that key. Overlapping and retried chunks
 require a normalization step and are left as a future extension.
 
-The model also abstracts from how the finite chunk plan is discovered.
+The model also abstracts away how the finite chunk plan is discovered.
 A deployment must still know when the chunk loop has reached the
 intended end of the claimed key scope. For a whole-table run, a common
 way to establish that fact is to record the table's maximum primary key,
 or an equivalent end-of-table observation, with enough source-side
 context to know which table population the bound refers to. For a
 selected range, shard, tenant, or other scoped run, the analogous
-obligation is an end-of-scope witness for that chosen scope. The
-deployment must provide this witness. The model separately assumes that
+requirement is an end-of-scope marker for that chosen scope. The
+deployment must provide this evidence. The model separately assumes that
 the primary-key order and the source observation used for the bound are
-faithful.
+accurate.
 
 \subsection{Watermarks and Chunk-Read
 Coordinates}\label{watermarks-and-chunk-read-coordinates}
 
-A chunk read must be located in source-log time. DBLog needs to know
-which source events precede the read and which events can supersede its
-rows. It obtains this ordering with \textbf{watermarks}. Before a chunk
+\textbf{Watermarks} bound the source-log interval containing a chunk read.
+DBLog uses this interval without needing to identify the read's exact
+position within it. Before a chunk
 read, DBLog writes a \emph{low watermark} to a dedicated table in the
 source. After the scan, it writes a \emph{high watermark}. Both writes
 appear in the source log at definite coordinates, with the chunk
 \texttt{SELECT} between them. The baseline mechanism therefore needs
-write access to the source. A read-only deployment needs another source
-coordinate witness.
+write access to the source. A read-only deployment instead relies on
+existing source-log coordinates, such as transaction identifiers or LSN markers.
 
 The watermark pair establishes the read's \emph{provenance} in
 source-log order. The formal model attributes the returned rows to one
 \emph{chunk-read coordinate}, such as $c_1$ for chunk A in the running
-example. Every row image is treated as faithful to the source at that
+example. Every row image is treated as matching the source at that
 coordinate.
 
 The watermark bracket alone does not establish this single-coordinate
 attribution. A multi-row \texttt{SELECT} is not instantaneous. The
 deployment must also provide either read semantics that make all rows
 consistent at one source coordinate, such as a statement-level snapshot
-or repeatable-read scan, or per-row coordinate evidence. Thus, ``chunk A
-read at $c_1$'' combines two facts. The watermarks bracket the read at
-$c_1$, and the returned row images are faithful to the source at
-$c_1$.
+or repeatable-read scan, or per-row evidence that all returned row images
+match one common source coordinate. Thus, ``chunk A
+read at $c_1$'' combines two distinct conditions: the watermarks
+bracket the read around $c_1$, and the returned row images accurately
+reflect the source state at $c_1$.
 
 In the original DBLog mechanism, the interval between the two
-watermarks is also the window over which stale chunk rows are
-suppressed. A chunk row is
-discarded when the source log shows a write for the same key inside that
-window. The model represents that behavior with two simpler parts. Each
-returned row has a faithful chunk-read coordinate, and replay applies a
-frontier-wide \emph{latest-event-wins} rule
-(\S\ref{refresh-events-and-ordinary-cdc-events}). The two views reach the
-same per-key state, by the window-suppression equivalence of
-\S\ref{raw-replay-and-normalized-clean-prefix}. A write committed inside
-the watermark window is
-itself an ordinary CDC event the replay carries, and latest-event-wins
-lets it override the chunk row in the same way as in-window suppression.
-A write after the high watermark is handled identically. Suppression in
-the window and later override at the frontier therefore produce the
-same state.
+watermarks is also the window over which chunk rows with matching CDC
+events are suppressed. A chunk row is discarded when the source log shows a write
+for the same key inside that window, whether that write committed
+before or after the chunk read. The model represents that behavior with
+two simpler parts. Each returned row has a valid chunk-read coordinate,
+and replay applies a frontier-wide \emph{latest-event-wins} rule
+(\S\ref{refresh-events-and-ordinary-cdc-events}). The raw replay keeps
+every chunk row.
+
+For a completed watermark window whose CDC events have been captured
+in source order, both formulations reach the same per-key state at the
+window close. For a key in the chunk's domain, there are three cases. If a
+same-key write commits after the chunk read but within the window, the
+last such write determines the key's final state in both formulations. If the
+only same-key writes inside the window commit before or at the chunk
+read, the read already reflects them. The chunk row then carries the
+same value or absence as the last of those writes, and discarding it
+changes nothing. If no same-key write falls inside the window, the row
+survives in both formulations. Original DBLog emits it after the high
+watermark, while the model places it at the chunk-read coordinate. No
+write to that key lies between the two positions, so the per-key result
+is the same. A write after the high watermark overrides the row in both
+formulations.
+
+The Isabelle development mechanizes the first case as the
+dominated-refresh equivalence
+(\S\ref{raw-replay-and-normalized-clean-prefix}). The other two cases use refresh
+fidelity, a wellformed-run obligation, together with source-state and
+$\Apply$ lemmas the development proves. It does not state the
+window-discard transformation as a separate theorem.
 
 The formal run retains the low and high watermarks as evidence for the
 chunk-read coordinate. They do not add another state-equality
 condition. Section~\ref{wellformed-runs} records the required source-log
-ordering, retention, coordinate provenance, and row-image faithfulness.
-The last condition appears there as ``Refresh honesty.''
+ordering, retention, coordinate provenance, and row-image accuracy.
+The last condition appears there as ``Refresh fidelity.''
 
 DBLog avoids a single physical snapshot read. It does not avoid
 source-log coordination.
@@ -967,7 +895,7 @@ source-log coordination.
 \subsection{Refresh Events and Ordinary CDC
 Events}\label{refresh-events-and-ordinary-cdc-events}
 
-DBLog turns each chunk-read row into a \textbf{refresh event}. A refresh
+The model represents each chunk-read row as a \textbf{refresh event}. A refresh
 records that key $k$ held a given value, or was absent, at the
 chunk-read coordinate. A source-log write becomes an ordinary CDC event
 that records an insert, update, or delete at its source-log coordinate.
@@ -982,11 +910,11 @@ override chunk A's older refresh in the example.
 \subsection{Raw Replay and Normalized Clean
 Prefix}\label{raw-replay-and-normalized-clean-prefix}
 
-DBLog assembles a finite sequence called the \emph{clean prefix}. We use
+The model constructs a finite sequence called the \emph{clean prefix}. We use
 two forms of this sequence. The theorems use the \emph{raw} form. The
 \emph{normalized} form is an optional, $\Apply$-equivalent presentation.
 
-The \textbf{raw replay} is the evidence-preserving sequence: it may
+The \textbf{raw replay} is the evidence-preserving sequence. It may
 include a refresh even if a later CDC event for the same key dominates
 it. Raw replay is useful operationally because it shows exactly what
 DBLog observed.
@@ -997,24 +925,24 @@ source-log evidence, provided suppressing them does not change the final
 $\Apply$ state. In the example, Bob's chunk-A refresh was
 dominated by Bob's later c3 update. Carol's chunk-B refresh was
 dominated by Carol's later c4 update. Carrying or suppressing those
-dominated refreshes gives the same final per-key state. The proof-facing
-bridge is state equivalence on the claimed scope: suppressing only
-same-key dominated refreshes preserves $\Apply$ for every claimed
-key.
+dominated refreshes gives the same final per-key state. The underlying
+formal connection is state equivalence over the claimed scope. Suppressing
+dominated refreshes for the same key preserves the replay outcome under
+$\Apply$ for all claimed keys.
 
 \smallskip
-\noindent\textbf{Window-suppression equivalence.} \emph{Retaining or
-suppressing a same-key refresh that a later source event dominates
-leaves $\Apply$ unchanged on every claimed key.} This fact connects the
-raw and normalized prefixes. It also connects original DBLog's
-in-window suppression to frontier-wide latest-event-wins. In both
-cases, a later same-key source event dominates the refresh, so $\Apply$
-produces the same state.
-Section~\ref{source-side-virtual-cut-soundness-layer-2} uses this
-equivalence to state the Layer~2 theorem about the raw clean prefix
-while leaving normalization an optional presentation.
+\noindent\textbf{Dominated-refresh equivalence.} \emph{A refresh
+dominated by a same-key CDC event at a strictly later source coordinate
+may be retained or suppressed without changing $\Apply$ on any claimed
+key.} This fact connects the raw and normalized prefixes. It also covers
+the later-write case of original DBLog's in-window suppression. The
+case of a write before or at the chunk read is argued separately in
+\S\ref{watermarks-and-chunk-read-coordinates}.
+Section~\ref{source-side-virtual-cut-soundness-layer-2} states the
+Layer~2 theorem about the raw replay prefix and uses this equivalence
+to extend its conclusion to the optional normalized presentation.
 
-The theorem later relies on these facts:
+The raw replay and its optional normalization satisfy three properties:
 
 \begin{itemize}\tightlist
 \item no required CDC event is missing.
@@ -1033,21 +961,16 @@ CockroachDB resolved timestamp). A certificate claims equality at a
 particular frontier, not at an unspecified eventual state. The clean prefix contains the
 replay evidence needed through that frontier for the claimed scope.
 
-Operationally, a DBLog certificate is useful only when the operator can
-say:
-
-\begin{quote}
-\itshape
-for this scope $K$ and frontier $f$, here is the finite replay prefix
-whose application equals the source state at $f$ on $K$.
-\end{quote}
+Operationally, a DBLog certificate asserts that for a given scope $K$
+and frontier $f$, replaying the certified prefix reconstructs the exact
+source state at $f$ on $K$.
 
 The rest of the paper makes that sentence precise. Section~5 defines the
 source and replay models. Section~6 names the equality as a virtual cut.
 Section~7 proves the source-side theorem for wellformed runs. Sections~8
 and~9 move from runs to accepted certificates.
 
-The clean prefix is finite but not necessarily small. It carries a
+The clean prefix is finite but not necessarily small. It contains a
 refresh for each key in the claimed scope and every in-scope CDC event
 through the frontier, so it scales with the scope and the change
 volume over the certified interval. For a large table backfilled
@@ -1055,34 +978,30 @@ over a busy window, the clean prefix is correspondingly large. The
 normalized clean prefix trims refreshes that newer evidence dominates.
 The raw form, on which the theorems are stated, does not.
 
-\subsection{After the Chunk Loop: Advancing the
-Frontier}\label{after-the-chunk-loop}
+\subsection{Advancing the Frontier Beyond the Initial
+Backfill}\label{after-the-chunk-loop}
 
-The backfill chunk loop runs until the claimed key scope is covered and
-then closes. DBLog does not stop at the first frontier. Once the chunk
-loop has established a virtual
-cut at a frontier $f$, DBLog continues consuming ordinary CDC events as
-the source commits them. The source-side
-result does not need a fresh chunk read for every later frontier. If the
-source log faithfully supplies the change data the source committed
-after $f$ and through a later frontier $f'$, appending that segment to
-the clean prefix advances the replay-equivalence claim from $f$ to $f'$.
+Once the chunk loop covers the claimed scope and terminates, DBLog
+continues consuming ordinary CDC events as the source commits them. The
+source-side result does not need a fresh chunk read for every later
+frontier. If the backfill has established a virtual cut at $f$, appending
+exactly the in-scope source events committed after $f$ and through a later
+frontier $f'$, in source order, advances that cut to $f'$.
 
-This is the operational reading of the continuation result proved in
-Section~\ref{source-side-continuation-and-restriction}: the backfill
-bootstraps the first virtual cut, and faithful CDC continuation advances
-it. The chunk reads happen once. A later cut is obtained by appending
-faithful source-log change data. This step relies on ordered source-log
+The continuation theorem formalizes this step in
+Section~\ref{source-side-continuation-and-restriction}. Once the backfill
+establishes an initial virtual cut, subsequent CDC stream events advance
+it. The chunk reads happen once. Later cuts are derived by appending
+valid source-log change events. This step relies on ordered source-log
 coordinates and retention of the events between $f$ and $f'$.
 Section~\ref{source-side-continuation-and-restriction} states the result
-and its premises.
+and its assumptions.
 
-\smallskip
-\noindent\textbf{Practitioner takeaway.} \emph{DBLog combines a finite
-chunk plan, source-log watermarks, chunk refreshes, and ordinary CDC
-events into a replay at a named frontier. The deployment must provide
-an ordered and retained source log, faithful chunk reads, and complete
-coverage of the claimed scope.}
+DBLog combines a finite chunk plan, source-log watermarks,
+chunk refreshes, and ordinary CDC events into an equivalent replay at a
+named frontier. The deployment must provide an ordered and retained
+source log, accurate chunk reads, and complete coverage of the claimed
+scope.
 
 \section{DBLog Claims and
 Limitations}\label{what-dblog-is-what-it-is-not-and-its-limitations}
@@ -1095,7 +1014,7 @@ for source coordination or establish the state of a destination.
 
 \subsection{What DBLog Provides}\label{what-dblog-is}
 
-The protocol combines the following inputs:
+The protocol combines six primary inputs:
 
 \begin{itemize}\tightlist
 \item a claimed key scope.
@@ -1108,7 +1027,7 @@ The protocol combines the following inputs:
   the source.
 \end{itemize}
 
-Replaying the clean prefix reaches the same per-key state as the source
+Replaying the clean prefix yields the exact per-key state of the source
 at the frontier on the claimed scope. Once this equality has been
 established, appending the source changes committed after that frontier
 and through a later frontier advances the cut. Neither step requires a
@@ -1117,16 +1036,16 @@ physical snapshot read.
 \subsection{Limits of the Result}\label{what-dblog-is-not}
 
 The result depends on source-log ordering, retained CDC events,
-chunk-read coordinates, frontier discipline, and evidence that ties
+chunk-read coordinates, frontier ordering, and evidence that connects
 these observations to the source. A deployment or source connector must
 establish these conditions.
 
-The core theorem is scoped. Whole-table equality is derived only when
-the Layer~4 anchor-domain and no-unclaimed-replay-key conditions also
-hold.
+The core theorem guarantees equality specifically for the claimed scope.
+Whole-table equality is a derived result requiring the Layer~4
+anchor-domain and no-unclaimed-replay-key conditions.
 
-The theorem does not establish exactly-once delivery or destination
-state. A destination may receive the certified replay without applying
+The theorem does not establish destination state or exactly-once delivery.
+A destination may receive the certified replay without applying
 it in the required order or reaching the corresponding state. The
 source-side continuation result advances replay equality to later
 frontiers, but it does not show that a sink has applied those events.
@@ -1141,7 +1060,7 @@ named system until its implementation and source assumptions have been
 checked against the formal model.
 
 \subsection{Failure Modes and Required
-Evidence}\label{failure-modes-the-certificate-story-must-expose}
+Evidence}\label{sec:failure-modes-evidence}
 
 Table~\ref{tab:failure-modes} lists the main failure modes, the evidence
 or assumption that addresses each one, and whether the condition is
@@ -1164,16 +1083,16 @@ Missing CDC event &
   frontier. &
   Deployment obligation / External observation assumption\\
 Missing continuation segment &
-  A later frontier is claimed without the faithful source-log change
+  A later frontier is claimed without the actual source-log change
   data the source committed between the certified frontier and that
   later frontier. &
-  Source-log retention for the continuation interval and faithful CDC
+  Source-log retention for the continuation interval and complete CDC
   coverage. &
   Deployment obligation / External observation assumption\\
 Bad watermark or coordinate &
   A chunk row is treated as if it was read at the wrong source-log
   position. &
-  Watermark or coordinate faithfulness for the chunk read. &
+  Watermark or coordinate validity for the chunk read. &
   Deployment obligation / External observation assumption\\
 Stale refresh survives &
   An older chunk-read value overrides a newer source-log event for
@@ -1204,9 +1123,9 @@ Whole-table replay-key mismatch &
   Layer 4 no-unclaimed-replay-key side condition, which is not part of scoped
   virtual-cut equality. &
   Machine-checked\\
-Unfaithful observation &
+Inaccurate observation &
   The connector, source log, primary-key interpretation, or
-  chunk-read result is not faithful to the real database. &
+  chunk-read result does not accurately reflect the source database. &
   Not internally provable from the certificate alone. &
   External observation assumption\\
 \bottomrule
@@ -1217,22 +1136,16 @@ For the initial certificate, a checker can expose the internal evidence
 failures listed in the table. Layer~4 adds the conditions needed for a
 whole-table claim. A concrete checker for continuation certificates is
 not included. In all cases, the theorem assumes that the source
-observations are faithful to the mathematical source history.
+observations match the mathematical source history.
 
-\subsection{Trust Boundary}\label{the-main-limitation-to-keep-in-mind}
+\subsection{Trust Boundary}\label{sec:trust-boundary}
 
-The strongest result remains source-side. Under faithful source
+The strongest result remains source-side. Under accurate source
 observation and the checker assumptions, accepted evidence yields a
 certified virtual cut. The result does not prove that a concrete parser
-is correct, that a connector reports the source faithfully, that a
+is correct, that a connector reports the source accurately, that a
 named product implements every assumption, or that a sink has applied
 the replay.
-
-\smallskip
-\noindent\textbf{Practitioner takeaway.} \emph{A certificate supports a
-source-side replay claim on a chosen scope and frontier. It does not by
-itself establish exactly-once delivery, whole-table coverage,
-destination-state convergence, or correctness of a named product.}
 
 \section{Formal Model \mbox{(Layer 0 and Layer 1)}}\label{formal-model-layer-0-and-layer-1}
 
@@ -1243,8 +1156,8 @@ CDC observations, clean prefixes, and wellformedness conditions.
 
 These layers do not include certificates, verifiers, destination ACKs,
 or whole-table conditions. Layer~2 proves a theorem about wellformed
-runs. Layer~3 then states when an accepted certificate witnesses such a
-run.
+runs. Layer~3 then establishes when an accepted certificate guarantees
+such a run.
 
 Table~\ref{tab:notation} fixes the symbols the formal sections use. A
 predicate (short sans-serif tag like $\WF$, $\FSO$, $\Mat$, $\Coh$,
@@ -1305,7 +1218,7 @@ $\Mat(C,E,R)$ & predicate &
 $\Coh(C,E,R)$ & predicate &
   $(C,E)$ is coherent with run $R$ (Section~\ref{certificate-run-coherence}).\\
 $\FSO(E,b_0,H,\RawObs)$ & assumption &
-  faithful source observation.\\
+  accurate source observation ($\FSO$).\\
 $\WTS(C,H,b)$ & predicate &
   whole-table claim scope (Layer 4).\\
 \bottomrule
@@ -1323,8 +1236,8 @@ one of
   \mathsf{Update}\,k\,v,\qquad
   \mathsf{Delete}\,k.
 \]
-Each event carries a source coordinate: a commit position, log sequence
-number, monotone source-side timestamp, or equivalent order-bearing
+Each event records a source coordinate, such as a commit position, log sequence
+number, monotonic timestamp, or equivalent order-bearing
 token. We write $c \le c'$ when
 coordinate $c$ is no later than $c'$. A
 source history is wellformed when its events are ordered by that
@@ -1341,12 +1254,12 @@ If there is no event, the key keeps its base state $b_0(k)$.
 The coordinate convention is inclusive. A chunk read recorded at
 coordinate $c$ observes $\Src(b_0,H,c)$, including
 source events at coordinate $c$. A chunk read is \emph{attributed} to
-the latest coordinate
-whose committed effects its row images already reflect.
+a coordinate within its watermark bracket at which all its row images
+match the committed source state.
 \S\ref{watermarks-and-chunk-read-coordinates} sets out what a deployment
 must supply for that attribution to be sound. The watermark bracket
-locates the read, while chunk-read semantics or per-row
-coordinate evidence make the returned row images faithful to one
+locates the read, while chunk-read semantics or coordinate evidence
+establish that all returned row images match that common
 coordinate. Canonical replay therefore
 places same-coordinate CDC evidence before the refresh that records the
 post-$c$ chunk-read state. Later source-coordinate events still
@@ -1385,19 +1298,9 @@ $(m \restrict K)(k) = m(k)$ when $k \in K$, and
 $\None$ otherwise. The displayed formulas use the
 $\restrict$ symbol throughout.
 
-% Float declared upstream of \subsection{Wellformed Runs} so LaTeX can
-% place Table 4 at the top of an earlier page than where its body-text
-% intro paragraph naturally sits.  Source position pins the earliest
-% page a top-float can land on --- floats only move forward.  Declaring
-% the float near its intro paragraph (in \S5.5 source) pinned earliest
-% top-placement at page 14, leaving column 2 of that page short below
-% the table; an upstream declaration (here, before \S5.3) lets LaTeX
-% place the float on page 13.  Rendering order is unchanged --- the
-% caption block stands on its own and \S5.5 still introduces it with
-% ``Its clauses say:'' wherever the float lands.
+% Declare this wide table early so it can float before its discussion.
 \begin{table*}[t]
-\caption{Wellformed-DBLog-run obligations: clauses of
-$\WF(b_0,R,H)$ in reader-facing terms, with status.}
+\caption{Wellformed-DBLog-run obligations in $\WF(b_0,R,H)$ and their status.}
 \label{tab:wellformed-obligations}
 \centering\small
 \begin{tabularx}{\textwidth}{@{}p{1.45in}Yp{1.8in}@{}}
@@ -1414,7 +1317,7 @@ CDC coverage &
   Every relevant source event after the responsible chunk read and
   through the frontier is observed. &
   External observation assumption\\
-CDC faithfulness &
+CDC fidelity &
   Observed CDC events are real source events, in the right order, with
   same-key same-coordinate multiplicity preserved. &
   External observation assumption\\
@@ -1426,7 +1329,7 @@ Chunk evidence &
 Read-before-frontier &
   Every chunk read occurs no later than the run frontier. &
   Deployment obligation\\
-Refresh honesty &
+Refresh fidelity &
   A chunk-read value or absence matches
   $\Src(b_0,H,\text{read-coord.})$ for that key. &
   External observation assumption / Deployment obligation\\
@@ -1436,8 +1339,7 @@ Refresh honesty &
 
 \subsection{Abstract DBLog Runs}\label{abstract-dblog-runs}
 
-A DBLog run $R$ is modeled abstractly. The model observes it only
-through a small set of accessors:
+A DBLog run $R$ is modeled abstractly, characterized through six accessor functions:
 \[
   \begin{aligned}
     \Scope(R)\quad             &\text{claimed key scope},\\
@@ -1463,37 +1365,39 @@ or handled by a future extension.
 
 \subsection{Clean Prefix}\label{clean-prefix}
 
-The clean prefix of a run is the finite replay sequence produced from:
+The clean prefix of a run is the finite replay sequence constructed from three elements:
 
 \begin{itemize}\tightlist
 \item chunk-read refreshes for the responsible chunks.
 \item observed CDC events for in-scope keys through the frontier.
-\item the \emph{clean-prefix ordering}. Events are sorted by source
-  coordinate, with a CDC event placed before a chunk refresh at a
-  shared coordinate, and same-coordinate CDC events kept in
+\item the \emph{clean-prefix ordering}, sorting events by source
+  coordinate, placing CDC events before chunk refreshes at
+  shared coordinates, and keeping same-coordinate CDC events in
   source-log position order.
-\item suppression, or harmless retention, of refreshes dominated by
-  newer same-key source-log evidence.
 \end{itemize}
+
+The clean prefix keeps every chunk refresh. The optional normalized
+presentation drops dominated refreshes without changing the final
+replay state.
 
 The theorem does not rely on an unstated ``good replay'' primitive. The
 clean prefix is constrained by the run's chunk plan, CDC observations,
 frontier, and scope. If a needed CDC event is missing, if a future event
 is replayed, if a refresh appears without a responsible chunk
-observation, or if same-coordinate CDC order is scrambled, the run is
+observation, or if same-coordinate CDC events are reordered, the run is
 not wellformed for the theorem.
 
 The main invariant is per-key. For each key in scope, the
-latest replay event in the clean prefix is either the latest faithful
+latest replay event in the clean prefix is either the latest accurate
 source event through the frontier, or it is a refresh whose value or
 absence at its read coordinate remains unchanged until the frontier.
 Layer~2 derives its result from this invariant.
 
-The mechanization has one additional premise. The canonical clean
+The mechanization has one additional assumption. The canonical clean
 prefix enumerates each chunk domain in sorted key
 order, so the run- and certificate-layer theorems assume a linear
-order on the key type. This is no extra demand, since chunks are
-primary-key ranges and ranges already presuppose that order. The state-level continuation and
+order on the key type. This introduces no additional requirement, as chunk
+selection already assumes linearly ordered primary keys. The state-level continuation and
 restriction theorems of
 Section~\ref{source-side-continuation-and-restriction} carry no such
 constraint.
@@ -1502,17 +1406,16 @@ constraint.
 
 We write $\WF(b_0,R,H)$ for the wellformed DBLog run predicate. It
 collects the source-side conditions used by the proof.
-Table~\ref{tab:wellformed-obligations} lists these conditions in
-reader-facing terms.
+Table~\ref{tab:wellformed-obligations} lists these conditions.
 
-The split between Deployment obligation and External observation
-assumption is intentional. The model can state what a wellformed run
-must satisfy. It cannot prove, from inside the run, that an external
-database connector reported every source event faithfully or that a chunk
-read was faithful to the real source.
+The split between Deployment obligations and External observation
+assumptions is intentional. The model defines what a wellformed run
+must satisfy. It cannot prove, from within the run model itself, that an external
+database connector reported every source event without loss or that a chunk
+read accurately captured the real source state.
 
-Refresh honesty carries both labels because it combines two facts. A
-returned row image must report the source value or absence faithfully,
+Refresh fidelity includes both labels because it combines two aspects. A
+returned row image must report the source value or absence accurately,
 which is an External observation assumption. The chunk-read semantics
 pin those images to a single coordinate
 (\S\ref{watermarks-and-chunk-read-coordinates}), which is a Deployment
@@ -1531,7 +1434,7 @@ consumed by the theorem. It is not a proof that a concrete
 chunk-selection loop stopped in the right place, and Layer 1 contains no
 maximum-key accessor or chunk-loop termination algorithm. A
 maximum-primary-key query, an empty-next-chunk observation, a
-predeclared range bound, or another end-of-scope witness may justify the
+predeclared range bound, or another end-of-scope indicator may justify the
 finite partition operationally. Supplying the resulting partition,
 including evidence that the loop reached the intended end of the
 claimed key scope, is a Deployment obligation. The theorem consumes the
@@ -1540,7 +1443,7 @@ partition, not the plan-construction algorithm.
 \subsection{Layer 0 and Layer 1
 Lemmas}\label{layer-0-and-layer-1-lemmas}
 
-The source and replay model supplies the elementary facts used by the
+The source and replay model establishes the elementary facts used by the
 main proof:
 
 \begin{itemize}\tightlist
@@ -1552,7 +1455,7 @@ main proof:
 \item A replay-side $\mathsf{Cdc}$ event has the same per-key effect as
   its source event.
 \item A refresh has the source-state value at its chunk-read coordinate
-  when the chunk-read honesty premise holds.
+  when the chunk-read fidelity assumption holds.
 \item The source state at a later frontier is the source state at an
   earlier frontier updated by exactly the source events strictly
   between them. This is immediate from the preceding characterization, since
@@ -1575,19 +1478,17 @@ preview of the Layer~2 theorem stated and explained in Section~7:
 
 Section~6 first names the equality itself.
 
-\smallskip
-\noindent\textbf{Practitioner takeaway.} \emph{The wellformed-run
-conditions require a bound source history, a finite chunk partition,
-watermark-bracketed chunk reads, and complete and faithful CDC evidence.
-The following theorems apply to runs that meet these conditions.}
+A wellformed run is bound to its source history. It requires a finite
+chunk partition, watermark-bracketed chunk reads, and complete, accurate
+CDC evidence. The following theorems apply to runs that meet these conditions.
 
 \section{Virtual Cuts}\label{virtual-cuts}
 
 \enlargethispage{2\baselineskip}
 
-A virtual cut states that replay reaches the same per-key state as the
-source at a chosen frontier on a chosen scope. It is an equality of
-outcomes, not a physical read cut.
+A virtual cut formalizes the property that replaying a prefix yields the same per-key state as the
+source at a designated frontier on a given scope. It establishes an equality of
+outcomes rather than requiring a simultaneous physical read cut.
 
 We write $\VCS(\sigma,K,f,H)$ for the state-level form, with the base
 state $b_0$ left implicit in this four-argument shorthand:
@@ -1610,7 +1511,7 @@ the accessors of a certificate:
   \VCS\bigl(\CleanPrefix(C),\Scope(C),\Frontier(C),H\bigr).
 \]
 
-Expanded:
+Expanding this definition:
 
 \[
 \begin{aligned}
@@ -1646,8 +1547,8 @@ run accessors:
   \VCS\bigl(\CleanPrefix(R),\Scope(R),\Frontier(R),H\bigr).
 \]
 
-Layer 3 then proves that an accepted certificate, under faithful source
-observation, witnesses a run whose accessors agree with the certificate.
+Layer 3 then proves that an accepted certificate, under accurate source
+observation, certifies a run whose accessors agree with the certificate.
 That is how the run-side theorem becomes the certificate-side theorem.
 
 \section{Source-Side Virtual-Cut Soundness \mbox{(Layer 2)}}\label{source-side-virtual-cut-soundness-layer-2}
@@ -1662,37 +1563,36 @@ Layer 2 proves the source-side theorem:
 \end{aligned}
 \]
 
-Reader-facing theorem summary:
-
+\paragraph*{Theorem Summary.}
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Status:} Machine-checked under the displayed
-  premises.
+  \textbf{Status.} Machine-checked under the displayed
+  assumptions.
 \item
-  \textbf{Claim:} the clean prefix of a wellformed DBLog run reaches the
+  \textbf{Claim.} The clean prefix of a wellformed DBLog run reaches the
   source state at the run frontier on the run scope.
 \item
-  \textbf{Premises:} the wellformed-run obligations in
+  \textbf{Assumptions.} The wellformed-run obligations in
   Section~\ref{wellformed-runs},
-  including chunk partition, CDC coverage and faithfulness, chunk-read
-  honesty, and read-before-frontier discipline.
+  including chunk partition, CDC coverage and fidelity, chunk-read
+  fidelity, and read-before-frontier ordering.
 \item
-  \textbf{Boundary:} this is a source-side run theorem, not yet a
-  certificate, whole-table, or sink-state theorem.
+  \textbf{Boundary.} This is a source-side run theorem, distinct from
+  certificate-checking, whole-table, or sink-state theorems.
 \end{itemize}
 
 Equivalently, every wellformed DBLog run satisfies the virtual-cut-state
 equality at the run's frontier on the run's scope. The theorem is stated
-about the run's raw clean prefix. By the window-suppression equivalence
+about the run's unnormalized replay prefix. By the dominated-refresh equivalence
 of \S\ref{raw-replay-and-normalized-clean-prefix}, the normalized clean
 prefix yields the same $\Apply$ state and therefore the same equality.
 
 The theorem assumes the wellformed-run predicate of
 Section~\ref{wellformed-runs}, including chunk partition, frontier
-discipline, CDC coverage and faithfulness, and chunk-read honesty. Each
-is stated explicitly because omitting it permits a real counterexample
-(Table~\ref{tab:load-bearing-obligations}). The predicate's remaining
+bounds, CDC coverage and fidelity, and chunk-read fidelity. Each
+condition is stated explicitly because omitting it allows a counterexample
+(Table~\ref{tab:essential-obligations}). The predicate's remaining
 conjunct, clean-prefix closure, is derived by definition. It holds
 for every run by the clean-prefix construction, so the proof may use it
 but no deployment need establish it separately.
@@ -1702,8 +1602,7 @@ but no deployment need establish it separately.
 The proof is a per-key latest-event argument.
 
 First, restricted-state equality reduces the theorem to pointwise
-equality. It is enough to show that for every key $k$ in
-$\Scope(R)$:
+equality. It is enough to show that for every key $k \in \Scope(R)$,
 
 \[
   \Apply(\CleanPrefix(R))(k) = \Src(b_0,H,\Frontier(R))(k).
@@ -1714,23 +1613,23 @@ unique responsible chunk, and the chunk-read evidence produces a
 value-or-absence refresh for $k$ that belongs to $\CleanPrefix(R)$,
 including $\mathsf{Refresh}\,k\,\None\,c$ when the row is absent at the
 chunk-read coordinate. Therefore the ``no replay event for $k$'' case
-cannot occur for an in-scope key. The clean-prefix-of-latest
-correspondence says that every in-scope $k$ has a latest event in
-$\CleanPrefix(R)$ and that this event is either a CDC event or the
-responsible chunk's refresh. The proof therefore has two cases.
+cannot occur for an in-scope key. By the clean-prefix construction,
+every in-scope key $k$ has a latest event in $\CleanPrefix(R)$, which
+must be either a CDC event or the responsible chunk's refresh. The proof
+therefore has two cases.
 
-\subsection{Case 1: The Latest Replay Event Is
+\subsection{Case 1. The Latest Replay Event Is
 CDC}\label{case-1-the-latest-replay-event-is-cdc}
 
 Suppose the latest replay event for $k$ in
-$\CleanPrefix(R)$ is a CDC event $\mathsf{Cdc}\,c\,e$. The
-clean-prefix coherence obligations say this replay event comes from an
-observed CDC pair. CDC faithfulness says that observed pair is a real
-source event in $H$. Because the event lies in the clean prefix, its
+$\CleanPrefix(R)$ is a CDC event $\mathsf{Cdc}\,c\,e$. Clean-prefix
+coherence ensures this replay event originates from an observed CDC pair,
+while CDC fidelity guarantees that this pair corresponds to a genuine source
+event in $H$. Because the event lies in the clean prefix, its
 source coordinate $c$ is within the run's frontier, i.e.\ $c \le
 \Frontier(R)$. Order preservation and same-coordinate
-multiplicity say the replay did not silently reverse or drop competing
-source events for the same key and coordinate.
+multiplicity ensure that the replay preserves both the order and the
+occurrences of source events for that key and coordinate.
 
 Now assume, for contradiction, that the source history has a later event
 for $k$ at or before the frontier. CDC coverage would put that
@@ -1743,12 +1642,12 @@ So the latest replay CDC event corresponds to the latest source event
 for $k$ through the frontier. $\Apply$ and $\Src$
 therefore make the same update at $k$.
 
-\subsection{Case 2: The Latest Replay Event Is a
+\subsection{Case 2. The Latest Replay Event Is a
 Refresh}\label{case-2-the-latest-replay-event-is-a-refresh}
 
 Suppose the latest replay event for $k$ is
 $\mathsf{Refresh}\,k\,m\,c_{\mathit{read}}$. The responsible-chunk obligations
-identify the chunk that produced it, and refresh honesty says:
+identify the responsible chunk, and refresh fidelity ensures that
 
 \[
 m = \Src(b_0,H,c_{\mathit{read}})(k).
@@ -1767,19 +1666,19 @@ Therefore the source state for $k$ at the read coordinate is
 still the source state for $k$ at the frontier. The refresh
 writes exactly that value or absence, so
 $\Apply(\CleanPrefix(R))(k)$ equals
-$\Src(b_0,H,\Frontier(R))(k)$. The value case and the
-row-absence case use the same equation. Absence is $\None$ in
-the per-key state.
+$\Src(b_0,H,\Frontier(R))(k)$. Both row presence and row absence
+satisfy this equation, with absence represented by $\None$ in the
+per-key state.
 
 \subsection{Why the Assumptions Are
-Necessary}\label{why-the-assumptions-are-load-bearing}
+Necessary}\label{sec:assumption-necessity}
 
 The proof fails if the obligations are weakened.
 
 \begin{table*}[t]
 \caption{Counterexamples obtained when selected obligations in $\WF$
 are removed.}
-\label{tab:load-bearing-obligations}
+\label{tab:essential-obligations}
 \centering\small
 \begin{tabularx}{\textwidth}{@{}p{1.4in}YY@{}}
 \toprule
@@ -1787,8 +1686,8 @@ are removed.}
 \textbf{Boundary protected}\\
 \midrule
 CDC coverage &
-  A source update after a chunk read is missing from replay, so an old
-  refresh wins. &
+  A source update after a chunk read is missing from the replay, allowing a stale
+  refresh value to persist. &
   DBLog needs retained source-log evidence.\\
 Strict chunk ownership &
   Two chunks both claim a key, or no chunk owns it, so the refresh
@@ -1802,7 +1701,7 @@ Same-coordinate order and multiplicity &
   Duplicate or same-coordinate source events are observed in a
   different order or with an occurrence missing. &
   Latest-event reasoning must match source order.\\
-Refresh honesty &
+Refresh fidelity &
   A chunk refresh records a value or absence that was not the source
   state at the read coordinate. &
   Chunk reads remain an External observation assumption.\\
@@ -1810,36 +1709,34 @@ Clean-prefix order &
   A clean-prefix event for some key sits before an earlier-coordinate
   same-key event, so the prefix's latest event for that key differs
   from the source's. &
-  Per-key latest-event reasoning carries from the prefix to the
+  Per-key latest-event reasoning transfers from the prefix to the
   source.\\
 \bottomrule
 \end{tabularx}
 \end{table*}
 
-These negative cases are the reason the theorem's
-premise is the full wellformed-run predicate rather than a vague
+These negative cases are the reason the theorem
+requires the full wellformed-run predicate rather than a vague
 statement that DBLog ``collected some chunks and some CDC.''
 
-\smallskip
-\noindent\textbf{Practitioner takeaway.} \emph{A wellformed backfill
-produces a replay that reaches the source state at the chosen frontier
-on the chosen scope. The result does not require a long-lived table lock
-or a pause in source writes. The next two layers connect this run-level
-result to a certificate and, under additional conditions, to the whole
-table.}
+A wellformed backfill produces a replay sequence that reconstructs the
+source state at the chosen frontier on the chosen scope, requiring neither long-lived table
+locks nor pauses in source writes. The next two layers connect this run-level guarantee
+to an inspectable certificate and, under additional conditions, extend it to whole-table
+equivalence.
 
 \section{Certificates, Evidence, and
 Verifiers}\label{certificates-evidence-and-verifiers}
 
 Layer~2 proves a theorem about an abstract DBLog run. If the run is
 wellformed, its clean replay prefix reaches the source state at its
-frontier on its scope. A deployment, however, does not hand a reader an
-abstract run. It hands over a certificate and evidence. This section
-defines those artifacts. Section~9 gives the corresponding theorem.
+frontier on its scope. In practice, a deployment provides a certificate and associated evidence
+bundle rather than an abstract run. This section defines those artifacts,
+and Section~9 gives the corresponding theorem.
 
 \subsection{Certificate}\label{certificate}
 
-A \textbf{certificate} is the claim object. It names:
+A \textbf{certificate} is the claim object, specifying three accessors:
 \[
   \begin{aligned}
     \Scope(C)\quad        &\text{the keys being claimed},\\
@@ -1847,20 +1744,19 @@ A \textbf{certificate} is the claim object. It names:
     \CleanPrefix(C)\quad   &\text{the certified replay prefix.}
   \end{aligned}
 \]
-Before acceptance, $\CleanPrefix(C)$ is only the \emph{claimed} prefix.
-Storing a replay list in a certificate does not authenticate it.
-Accepted evidence must materialize a wellformed run and tie the
-certificate accessors to that run. The certificate theorem uses the prefix only
-after accepted evidence materializes a coherent wellformed run that
-agrees with that accessor.
+Before acceptance, $\CleanPrefix(C)$ represents only a claimed prefix.
+Storing a replay sequence in a certificate provides no guarantee of
+validity. The certificate theorem applies only after accepted
+evidence materializes a coherent, wellformed run that agrees with the
+certificate's accessors.
 
 \subsection{Evidence}\label{evidence}
 
 An \textbf{evidence bundle} contains the source-side material the
 checker inspects. This includes certificate binding evidence, the chunk plan,
 chunk-read coordinates, chunk domains, observed row values or absences,
-ordinary CDC observations, and the construction evidence for the raw or
-normalized clean prefix.
+ordinary CDC observations, and the construction evidence for the raw
+clean prefix.
 
 The evidence bundle does not contain a destination-state proof. It does
 not contain sink ACK semantics. It does not contain whole-table
@@ -1872,22 +1768,21 @@ whole-table specialization. The certificate layer is source-side.
 The materialization relation $\Mat(C,E,R)$ connects certificate $C$ and
 evidence $E$ to the model. Together, they describe the abstract DBLog
 run $R$ consumed by the Layer~2 theorem. Materialization is
-structural. It connects
-the evidence to a run carrier with a scope, frontier, clean prefix,
-chunk plan, chunk-read observations, and CDC observations. It does
-not by itself say that the run is wellformed against the source
-history.
+purely structural: it connects the evidence to an abstract run carrier
+(specifying scope, frontier, clean prefix, chunk plan, chunk reads, and
+CDC events) without asserting that the resulting run is wellformed
+against the source history.
 
 Concretely, $\Mat$ relates the pair to the evidence-determined run.
 The materialized run's scope, frontier, clean prefix, chunk plan,
 chunk-read observations, and CDC observations are fixed by what $E$
-serializes, not chosen freely by the checker. Evidence that does not
+serializes and cannot be chosen arbitrarily by the checker. Evidence that does not
 describe a run shape the checker supports is reported $\Unsupported$
-rather than carried into an accepted claim. The certificate's own
+instead of being accepted into the claim. The certificate's own
 fields are tied to the materialized run by the coherence predicate
 below. Materialization alone establishes neither wellformedness nor
-faithfulness. Those properties come from the coherence predicate and
-the checker-substrate obligations.
+observation fidelity. Those properties derive from the coherence predicate and
+the checker obligations.
 
 Rejected and unsupported evidence need not materialize a run. For
 accepted evidence, the coherence predicate ensures that the checker
@@ -1916,7 +1811,7 @@ accessors.
 
 \subsection{Verifier Result}\label{verifier-result}
 
-The verifier result has three cases
+The verifier produces one of three outcomes
 (Table~\ref{tab:verifier-results}):
 
 \begin{table}[t]
@@ -1939,10 +1834,10 @@ $\Unsupported$ &
 \end{tabularx}
 \end{table}
 
-$\Unsupported$ matters because silently ignoring unknown evidence
-would be a soundness bug. If the checker cannot interpret an optional
-source-side feature, the certificate is not accepted as if that feature
-had been checked.
+The $\Unsupported$ outcome prevents unsound acceptance when the
+verifier encounters evidence outside its modeled fragment. If the checker
+cannot interpret an optional source-side feature, the certificate is not
+accepted as if that feature had been checked.
 
 $\Accept$, $\Reject$, and $\Unsupported$ are verifier
 results, not theorem-status labels. The verifier result here is an
@@ -1953,25 +1848,25 @@ been proved correct.
 \subsection{What Accept Means, and What It Does Not
 Mean}\label{what-accept-means-and-what-it-does-not-mean}
 
-$\Accept$ means that, under faithful source observation, the
+$\Accept$ indicates that, under accurate source observation, the
 evidence materializes a wellformed DBLog run whose scope, frontier, and
-clean prefix agree with the certificate. That is the bridge back to
+clean prefix match the certificate. That provides the bridge back to
 Layer 2.
 
 $\Accept$ does not validate the concrete database, connector, log,
 primary-key interpretation, source-coordinate semantics, parser, wire
 format, or named product. It also does not show that a sink applied the
-prefix or that the claim covers the whole table. Faithful source
-observation remains a premise.
+prefix or that the claim covers the whole table. Accurate source
+observation remains an explicit assumption.
 
-\subsection{Faithful Source
+\subsection{Accurate Source
 Observation}\label{faithful-source-observation}
 
-We write $\FSO(E,b_0,H,\RawObs)$ for the faithful-source-observation
-assumption, the External observation assumption of the certificate
+We write $\FSO(E,b_0,H,\RawObs)$ for the accurate source observation
+assumption ($\FSO$), the External observation assumption of the certificate
 layer. It ties the finite evidence bundle $E$ to the mathematical
-source history $H$ and base state $b_0$, against a raw source-
-observation carrier $\RawObs$. It covers the following facts:
+source history $H$ and base state $b_0$, against an abstract observation
+carrier $\RawObs$. It covers the following source facts:
 
 \begin{itemize}\tightlist
 \item the source history and base state the certificate is about.
@@ -1979,89 +1874,80 @@ observation carrier $\RawObs$. It covers the following facts:
 \item CDC retention and completeness over the certified interval.
 \item preservation of same-coordinate order and multiplicity where
   relevant.
-\item honesty of chunk-read values and absences at their recorded
+\item accuracy of chunk-read values and absences at their recorded
   coordinates.
 \item the primary-key interpretation and the assumption that chunk
   reads observe committed source state.
 \end{itemize}
 
 The theorem statements write the raw source-observation carrier as
-$\RawObs$. The carrier is abstract. It stands for whatever concrete
-record a deployment has of what the source emitted, interpreted by the
-faithful-source-observation assumption. It is not a destination log,
-not a sink-state proof, and not a claim that a named connector has been
-verified.
+$\RawObs$. The carrier is abstract. It stands for a deployment's record
+of source observations, interpreted under the accurate-source-observation
+assumption ($\FSO$). It is not a
+destination log, not a sink-state proof, and not a claim that a named
+connector has been verified.
 
 The certificate checker can compare evidence fields to one another. It
 cannot prove, from the certificate alone, that the outside world
-produced faithful observations. This is why the accepted-certificate
-theorem takes faithful source observation as a premise, labeled as an
-External observation assumption.
+produced accurate observations. Consequently, the accepted-certificate
+theorem takes accurate source observation as an explicit External observation
+assumption.
 
 \subsection{Role of the Certificate Layer}\label{why-this-layer-exists}
 
 Layer~2 needs a wellformed mathematical run, while a deployment exposes
-a certificate and evidence. Layer~3 connects the two. It states that
-accepted evidence materializes a coherent wellformed run under faithful
-source observation, after which the source-side virtual-cut theorem
-applies.
-
-\smallskip
-\noindent\textbf{Practitioner takeaway.} \emph{A certificate names the
-scope, frontier, and clean prefix. Its evidence must materialize a
-coherent wellformed run. Acceptance checks this internal relationship,
-while faithful source observation remains an explicit assumption.}
+a certificate and evidence. Layer~3 connects these levels by establishing that
+accepted evidence materializes a coherent wellformed run under accurate
+source observation, enabling the application of the source-side virtual-cut
+theorem.
 
 \section{Accepted-Certificate Soundness \mbox{(Layer 3)}}\label{accepted-certificate-soundness-layer-3}
 
-Layer 3 gives the certificate-side theorem. It has two statements: an
+Layer 3 establishes the certificate-side theorem across two components: an
 intermediate bridge theorem and the composed virtual-cut theorem.
 
 \subsection{Intermediate Theorem}\label{intermediate-theorem}
 
-The intermediate theorem is machine-checked under the \emph{checker
-substrate}, a small set of primitive obligations the abstract
-certificate checker must meet for acceptance to carry meaning.
-Table~\ref{tab:checker-substrate} lists them. They are stated as
-explicit assumptions. We do not prove that a concrete parser, wire
-format, or production verifier discharges them.
+The intermediate theorem is machine-checked under a small set of primitive
+\emph{checker obligations} that the abstract certificate checker must meet
+to guarantee a valid run. Table~\ref{tab:checker-substrate} lists them.
+They are stated as explicit assumptions. We do not prove that a concrete
+parser, wire format, or production verifier discharges them.
 
 \begin{table}[t]
-\caption{Checker-substrate obligations S1--S4 for the
+\caption{Checker obligations S1--S4 for the
 accepted-certificate intermediate theorem.}
 \label{tab:checker-substrate}
 \centering\small
 \begin{tabularx}{\columnwidth}{@{}l@{\hskip 1em}Y@{}}
 \toprule
-\textbf{} & \textbf{Checker-substrate obligation}\\
+\textbf{} & \textbf{Checker obligation}\\
 \midrule
 S1 & Accepted inputs are wellformed checker inputs that are structurally
      valid and parseable.\\
 S2 & Accepted checker inputs materialize an abstract DBLog run.\\
 S3 & The materialized run's accessors (scope, frontier, and clean
      prefix) agree with the certificate.\\
-S4 & A faithful accepted materialization is a wellformed run against
-     the source history.\\
+S4 & Under accurate source observation, an accepted materialization is a
+     wellformed run against the source history.\\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-Obligations S1--S4 are the premise structure of the intermediate
+Obligations S1--S4 form the assumptions of the intermediate
 theorem. Each is a property that the checker design must satisfy before
-an $\Accept$ result can license the theorem's source-side conclusion.
-Table~\ref{tab:checker-substrate} carries no fifth row because
-Unsupported-evidence reporting is not part of that premise list. It is
-a separate checker-design commitment, stated once outside the
-table.
+an $\Accept$ result implies the theorem's source-side conclusion.
+Reporting unsupported evidence is not part of these formal assumptions,
+but rather an operational checker obligation.
 
 \smallskip
 \noindent\textbf{Unsupported reporting.} A checker meeting S1--S4 must
-also not accept evidence it cannot interpret as if it had been checked.
-Uninterpretable evidence is reported $\Unsupported$ rather than
+not accept uninterpretable evidence as if it had been verified.
+Such evidence is reported as $\Unsupported$ rather than
 $\Accept$. \textbf{Status:} Deployment obligation on the concrete
-checker, not a Layer~3 premise.
+checker, not a Layer~3 assumption.
 
-Under obligations S1--S4 the intermediate theorem is:
+Under obligations S1--S4, the intermediate theorem states:
 
 \[
 \begin{aligned}
@@ -2071,13 +1957,13 @@ Under obligations S1--S4 the intermediate theorem is:
 \end{aligned}
 \]
 
-In words, accepted evidence, when interpreted through faithful source
-observation, witnesses a wellformed abstract DBLog run whose accessors
-agree with the certificate. Obligations S1--S3 carry the materialization
-and accessor agreement, and S4 carries wellformedness. The
-Unsupported-reporting commitment stated after the table is what keeps
-uninterpretable evidence from being accepted as if it had been checked.
-It is operational, not part of the premise list.
+In words, accepted evidence, when interpreted under accurate source
+observation, certifies a wellformed abstract DBLog run whose accessors
+agree with the certificate. Obligations S1--S3 guarantee materialization
+and accessor agreement, while S4 ensures wellformedness. The
+unsupported-reporting requirement prevents uninterpretable evidence
+from being treated as verified. This is an operational obligation rather
+than a formal assumption.
 
 \subsection{Composed Theorem}\label{composed-theorem}
 
@@ -2090,7 +1976,7 @@ The main certificate theorem is:
 \end{aligned}
 \]
 
-Expanded:
+Expanding this definition:
 
 \[
 \begin{aligned}
@@ -2101,40 +1987,38 @@ Expanded:
 \end{aligned}
 \]
 
-Reader-facing theorem summary:
-
+\paragraph*{Theorem Summary.}
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Status:} Machine-checked under
-  checker-substrate obligations S1--S4 (Table~\ref{tab:checker-substrate})
-  and faithful source observation.
+  \textbf{Status.} Machine-checked under
+  checker obligations S1--S4 (Table~\ref{tab:checker-substrate})
+  and accurate source observation ($\FSO$).
 \item
-  \textbf{Claim:} an accepted certificate is a virtual-cut certificate
-  when its evidence is interpreted through faithful source observation.
+  \textbf{Claim.} An accepted certificate guarantees a virtual cut
+  when its evidence is interpreted through accurate source observation.
 \item
-  \textbf{Premises:} checker-substrate obligations S1 (input
+  \textbf{Assumptions.} Checker obligations S1 (input
   wellformedness), S2 (materialization), S3 (accessor agreement),
-  S4 (faithful materialization is wellformed), and faithful source
-  observation of the evidence.
+  S4 (accurate materialization is wellformed), and accurate source
+  observation ($\FSO$).
 \item
-  \textbf{Boundary:} acceptance does not prove a concrete parser, wire
+  \textbf{Boundary.} Acceptance does not prove a concrete parser, wire
   format, production verifier, named product, whole-table claim, or sink
-  application. The Unsupported-reporting commitment is a separate
-  checker-design obligation, not part of the premise list.
+  application. The unsupported-reporting requirement is a separate
+  checker-design obligation rather than a formal assumption.
 \end{itemize}
 
-This is the formal meaning of ``an accepted DBLog certificate is a
-virtual-cut certificate.'' The faithful-source-observation premise is
-part of the sentence, not a footnote. Acceptance alone is not a proof
-about the mathematical source history.
+Consequently, certificate acceptance guarantees a virtual cut only relative
+to accurate source observation. Acceptance alone cannot validate
+physical database behavior or external connector fidelity.
 
 \subsection{Proof Explanation}\label{proof-explanation}
 
 The proof composes the layers already introduced.
 
-First, verifier acceptance and faithful source observation produce a
-witnessed run $R$:
+First, verifier acceptance under accurate source observation establishes a
+valid run $R$:
 
 \[
 \begin{aligned}
@@ -2171,65 +2055,60 @@ After substitution, the Layer 2 equality becomes:
 \end{aligned}
 \]
 
-Fourth, Section~6's definition folds that equality into
-$\VC(C,H)$.
+Fourth, by definition of $\VC(C,H)$ (Section~\ref{virtual-cuts}),
+this yields the certified virtual cut.
 
-The proof uses no sink, whole-table, or named-product premise. Its
+The proof uses no sink, whole-table, or named-product assumption. Its
 conclusion is source-side and restricted to $\Scope(C)$. The
-checker-substrate obligations and faithful source observation remain
-premises.
+checker obligations and accurate source observation remain
+assumptions.
 
-\subsection{Witnesses and Boundary
+\subsection{Non-Vacuity and Boundary
 Cases}\label{non-vacuity-and-boundary-cases}
 
-The formal development includes the following witness and boundary
-checks:
+The formal development includes the following non-vacuity checks and
+boundary cases:
 
 \begin{itemize}\tightlist
-\item there is a nonempty accepted-certificate witness with a
+\item A non-trivial accepted certificate exists with a
   non-base frontier, a chunk read, a value-changing replay event, and
-  faithful $\RawObs$/$b_0$/$H$ evidence.
-\item accepted-without-witness shapes are rejected by the
-  checker-substrate obligations.
-\item wrong certificate/evidence binding is rejected.
+  valid $\RawObs$, $b_0$, and $H$ evidence.
+\item candidate shapes lacking required proof components violate the
+  checker obligations.
+\item mismatched certificate-evidence pairs are rejected.
 \item unknown source-side evidence is $\Unsupported$ rather than
   silently accepted.
-\item mismatched certificate/run accessors fail coherence.
-\item unfaithful $\RawObs$, wrong $b_0$, and wrong $H$ fail faithful
-  source observation.
-\item empty scope is a trivial boundary, not the positive witness.
+\item mismatched certificate and run accessors fail coherence.
+\item inaccurate $\RawObs$, mismatched $b_0$, or corrupted $H$ fail
+  accurate source observation.
+\item an empty scope satisfies the predicate vacuously, whereas the formal
+  development provides a non-trivial concrete instance with non-empty keys.
 \end{itemize}
 
 These cases protect the main trust boundary. The theorem does not say
-that the certificate eliminates trust. It says that, under faithful
-source observation and explicit checker obligations, acceptance gives a
+that the certificate eliminates trust. It states that, under accurate
+source observation and explicit checker obligations, acceptance establishes a
 coherent wellformed run. The source-side theorem then
 yields the certified virtual cut.
 
-\smallskip
-\noindent\textbf{Practitioner takeaway.} \emph{A consumer can check a
-finite certificate against its evidence bundle. Under the stated
-checker obligations, acceptance yields a virtual cut only when the
-captured observations are faithful to the real source.}
-
 \section{Whole-Table Specialization \mbox{(Layer 4)}}\label{whole-table-specialization-layer-4}
 
-Layers~2 and~3 prove equality on $\Scope(C)$. A full backfill often
-intends that scope to cover a whole table or shard. Such a claim needs
-additional evidence that the scope includes every key whose state can
-matter between an anchor boundary and the certified frontier. The
-replay must also avoid writing keys outside that scope.
+Layers~2 and~3 prove equality on $\Scope(C)$. In a full backfill,
+this scope is typically intended to cover an entire table or partition.
+Such a claim needs additional evidence that the scope includes every
+key whose state can matter between an anchor boundary and the certified
+frontier. The replay must also avoid writing keys outside that scope.
 
-The whole-table specialization is therefore a derived result, not a new
-meaning of certificate acceptance. Acceptance gives the scoped virtual
-cut. The additional side condition tells us when the restriction to
-$\Scope(C)$ can be dropped.
+Whole-table equality is therefore a derived result rather than an
+inherent guarantee of certificate acceptance. Acceptance yields a
+scoped virtual cut, and the whole-table side condition establishes when
+the restriction to $\Scope(C)$ can safely be removed.
 
 \subsection{Anchor Boundary and Anchor
 Domain}\label{anchor-boundary-and-anchor-domain}
 
-An anchor boundary $b$ is a source coordinate used to name the
-table population the whole-table claim intends to cover. It is not a
+An anchor boundary $b$ is a source coordinate used to define the key
+population that the whole-table claim covers. It is not a
 physical snapshot read. Chunks may be read after $b$. Stale chunk observations can
 be repaired by source-log evidence and replayed to the frontier.
 
@@ -2253,12 +2132,12 @@ $\Src$. As with $\Src$, $b_0$ is a single base state fixed throughout the
 paper. We keep it implicit in $\AnchorDomain(H,b)$, and likewise in the
 whole-table claim scope $\WTS(C,H,b)$ below, since it never varies. A
 key present at the anchor that no source event at or before $b$ ever
-writes owes its anchor-domain membership entirely to $b_0$, the one
-place the base state does observable work in a whole-table claim.
+writes inherits its presence entirely from $b_0$, the only place where the
+base state directly affects the whole-table claim.
 
 Operationally, a whole-table deployment may use a maximum-primary-key
-or equivalent end-of-table witness to help show that the claimed scope
-covers this anchor domain. Such a witness does not replace $\WTS$. It
+query or equivalent end-of-table indicator to show that the claimed scope
+covers this anchor domain. Such an indicator does not replace $\WTS$. It
 must be tied to the anchor boundary $b$, or otherwise justify
 $\AnchorDomain(H,b) \subseteq \Scope(C)$. It also does not discharge the
 post-anchor touch condition below, including for keys beyond an
@@ -2278,10 +2157,9 @@ with $b < c \le f$, and the conservative interval table scope is
 \end{aligned}
 \]
 
-This is a conservative event-touch scope. It is not a minimal
-semantic-difference set. Even a delete of an already absent key is still
-a touch that the whole-table side condition can require the claim scope
-to cover.
+This event-touch scope is conservative rather than a minimal
+semantic-difference set: even deleting an already absent key counts as
+a touch that the claim scope must include.
 
 \subsection{A Small Anchor Example}\label{a-small-anchor-example}
 
@@ -2305,15 +2183,15 @@ of them would make the whole-table statement stronger than the evidence
 supports.
 
 There is also a replay-side condition. If the certified clean prefix
-writes a bystander key $999$ outside $\Scope(C)$, then
-scoped equality over $\{100,200,300\}$ may still be true, but
-whole-table equality is not justified. The replay has changed something
-outside the claimed table scope.
+writes a key outside $\Scope(C)$, such as key $999$, scoped equality
+may still hold, but the no-unclaimed-replay-key condition fails. The
+whole-table theorem therefore does not establish unrestricted equality
+for that prefix.
 
 \subsection{Whole-Table Claim Scope}\label{whole-table-claim-scope}
 
-We write $\WTS(C,H,b)$ for the whole-table claim-scope side condition.
-It has four conjuncts:
+We write $\WTS(C,H,b)$ for the whole-table claim-scope side condition,
+defined by four conjuncts:
 
 \[
 \begin{aligned}
@@ -2325,11 +2203,11 @@ It has four conjuncts:
 \]
 
 The first conjunct fixes the ordering of the anchor and frontier. The
-next two say that $\Scope(C)$ covers every key present at the
-anchor and every key touched after the anchor through the frontier. The
-final conjunct says that the certified replay prefix does not write
+next two require $\Scope(C)$ to cover every key present at the
+anchor and every key touched between the anchor and the frontier. The
+final conjunct ensures that the certified replay prefix writes no
 unclaimed keys.
-Figure~\ref{fig:whole-table-claim-scope} pictures the four conjuncts as
+Figure~\ref{fig:whole-table-claim-scope} illustrates the four conjuncts as
 overlapping key regions (anchor-domain, touched-between, replay-keys)
 over the source-coordinate axis.
 
@@ -2344,7 +2222,7 @@ certified claim scope'' to ``correct on every table key''.
 
 \subsection{Whole-Table Theorem}\label{whole-table-theorem}
 
-Under certificate acceptance, faithful source observation, and the
+Under certificate acceptance, accurate source observation, and the
 whole-table claim-scope side condition, the certified clean prefix
 reaches the source state at the certified frontier on the whole table:
 
@@ -2356,32 +2234,31 @@ reaches the source state at the certified frontier on the whole table:
 \end{aligned}
 \]
 
-Reader-facing theorem summary:
-
+\paragraph*{Theorem Summary.}
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Status:} Machine-checked under
-  checker-substrate obligations S1--S4
-  (Table~\ref{tab:checker-substrate}), faithful source observation,
+  \textbf{Status.} Machine-checked under
+  checker obligations S1--S4
+  (Table~\ref{tab:checker-substrate}), accurate source observation ($\FSO$),
   and $\WTS(C,H,b)$.
 \item
-  \textbf{Claim:} the scoped certificate theorem lifts to whole-table
+  \textbf{Claim.} The scoped certificate theorem lifts to whole-table
   source-state equality when the whole-table claim-scope side conditions
   cover boundary order, anchor-domain keys, post-anchor touches, and
   replay keys.
 \item
-  \textbf{Premises:} certificate acceptance, faithful source
-  observation, $\WTS(C,H,b)$, and checker-substrate obligations
+  \textbf{Assumptions.} Certificate acceptance, accurate source
+  observation, $\WTS(C,H,b)$, and checker obligations
   S1--S4 (Table~\ref{tab:checker-substrate}).
 \item
-  \textbf{Boundary:} this remains source-side. It does not prove sink
+  \textbf{Boundary.} This remains a source-side theorem, distinct from sink
   convergence, exactly-once delivery, or arbitrary destination
   correctness.
 \end{itemize}
 
 This is a source-side theorem. The certificate checker and
-faithful-source-observation assumption supply the certified scoped
+accurate-source-observation assumption supply the certified scoped
 virtual cut. The whole-table side condition supplies the coverage
 needed to remove the scope restriction.
 
@@ -2397,8 +2274,8 @@ Layer 3 gives the scoped equality:
 \]
 
 For keys inside $\Scope(C)$, that is already the desired equality.
-For keys outside $\Scope(C)$, the whole-table side condition does
-two jobs. The $\WTS(C,H,b)$ inclusions
+For keys outside $\Scope(C)$, the whole-table side condition addresses both
+source and replay states via the inclusions:
 \[
   \begin{aligned}
     \AnchorDomain(H,b)                &\subseteq \Scope(C), \\
@@ -2406,38 +2283,26 @@ two jobs. The $\WTS(C,H,b)$ inclusions
     \ReplayKeys(\CleanPrefix(C))      &\subseteq \Scope(C)
   \end{aligned}
 \]
-contrapose to
-$k \notin \Scope(C) \Rightarrow k \notin \AnchorDomain(H,b)$,
-$k \notin \Scope(C) \Rightarrow
-  k \notin \TouchedBetween(H,b,\Frontier(C))$, and
-$k \notin \Scope(C) \Rightarrow k \notin \ReplayKeys(\CleanPrefix(C))$,
-which power the two cases. First, the $b_0$-aware anchor-domain
-definition makes absence outside the anchor domain mean absence at the
-anchor boundary, including keys from the base state. Together with
-$b \le \Frontier(C)$ and no post-anchor touch through the frontier,
-this implies the key is absent from the source at the frontier.
-Second, because the key is outside $\ReplayKeys(\CleanPrefix(C))$, the
-clean prefix does not write it. Replay and source are therefore both
-absent outside $\Scope(C)$. Combining the inside-scope and
-outside-scope cases gives unrestricted equality.
+By contraposition, any key $k \notin \Scope(C)$ belongs neither to $\AnchorDomain(H,b)$,
+nor to $\TouchedBetween(H,b,\Frontier(C))$, nor to $\ReplayKeys(\CleanPrefix(C))$.
+First, because $k \notin \AnchorDomain(H,b)$, it is absent at the anchor
+boundary (even with base state $b_0$ taken into account). Because
+$b \le \Frontier(C)$ and $k$ is not touched in $(b, \Frontier(C)]$,
+$k$ remains absent from the source at the frontier.
+Second, because $k \notin \ReplayKeys(\CleanPrefix(C))$, the clean prefix
+never writes $k$. Replay and source are therefore both absent outside
+$\Scope(C)$. Combining the inside-scope and outside-scope cases gives
+unrestricted equality.
 
 \subsection{Scope of the Result}\label{boundaries}
 
-The specialization does not change the paper's trust boundaries. It
-still depends on faithful observation of the source-side evidence. It
+The specialization does not change the paper's trust boundaries,
+continuing to rely on accurate observation of source-side evidence. It
 does not prove that a concrete parser or production verifier
-implementation is correct. It does not prove sink-state convergence,
-exactly-once delivery, or arbitrary destination correctness. It also
-does not say that a virtual cut is a physical cut: the anchor is a
-source-coordinate boundary used for reasoning about table scope, not a
+is correct, nor does it establish sink-state convergence.
+It also distinguishes a virtual cut from a physical cut. The anchor provides a
+source-coordinate boundary for reasoning about table scope rather than representing a
 single request-wide read timestamp.
-
-\smallskip
-\noindent\textbf{Practitioner takeaway.} \emph{A whole-table result
-requires coverage of every key present at the anchor and every key
-touched after the anchor and through the frontier. The certified replay must also write
-nothing outside that scope. Certificate acceptance alone gives only the
-scoped result.}
 
 \section{Source-Side Continuation and Restriction of Virtual
 Cuts}\label{source-side-continuation-and-restriction}
@@ -2469,36 +2334,35 @@ The events remain in source order and are read as CDC replay events. We
 write $\ContSeg(H,K,f,f',\delta)$ when $\delta$ is exactly this list,
 with source order and multiplicity preserved.
 
-By construction, $\ContSeg(H,K,f,f',\delta)$ entails $f \le f'$. The
+By construction, $\ContSeg(H,K,f,f',\delta)$ requires $f \le f'$. The
 predicate is false whenever $f > f'$, independent of $\delta$. Theorems
-whose premises include $\ContSeg(H,K,f,f',\delta)$ therefore implicitly
+whose assumptions include $\ContSeg(H,K,f,f',\delta)$ therefore implicitly
 require $f \le f'$. The order is not restated in their displayed
 formulas.
 
-The interval is half-open because the coordinate convention is
-inclusive (Section~\ref{source-histories-and-frontiers}):
-$\Src(b_0,H,f)$ already reflects every event at coordinate $f$, so a
-continuation starts strictly after $f$ and runs through $f'$ inclusive.
+The interval is half-open because coordinate indexing is inclusive
+(Section~\ref{source-histories-and-frontiers}). Because $\Src(b_0,H,f)$ already
+incorporates all events through coordinate $f$, continuation begins strictly
+after $f$ and extends through $f'$ inclusive.
 
 Because the segment is defined by filtering the source history, a list
 that reorders, drops, or duplicates a source event does not satisfy
-$\ContSeg(H,K,f,f',\delta)$. A real CDC feed must deliver this exact
-segment. Its faithfulness is an \textbf{External observation
+$\ContSeg(H,K,f,f',\delta)$. A production CDC feed must deliver this
+exact sequence. Its accuracy is an \textbf{External observation
 assumption}, and retaining the source-log interval $(f,f']$ is a
 \textbf{Deployment obligation}.
 
 The segment is filtered to the scope $K$. It is the change data for
 the keys of $K$, not the source's entire change stream. A deployment
-whose CDC feed carries all keys must project that stream onto $K$ to
+whose CDC feed includes all keys must project that stream onto $K$ to
 obtain the continuation segment for a $K$-scoped cut. For a
 whole-table continuation the scope is the universal key set, and the
-whole-table continuation result below is the form to use. The
-definition is exact. A segment that drops, reorders, or duplicates
-an \emph{in-scope} event is not $\ContSeg(H,K,f,f',\delta)$ and the
-continuation does not hold. A
-segment padded with an \emph{out-of-scope} event also fails
-$\ContSeg$, although the scoped equality itself constrains only the
-keys of $K$.
+whole-table continuation result below is the form to use.
+This definition is strict: omitting, reordering, or duplicating an
+\emph{in-scope} event violates $\ContSeg(H,K,f,f',\delta)$, invalidating
+the continuation. Padding the segment with \emph{out-of-scope} events
+also fails $\ContSeg$, even though the resulting equality constrains
+only keys in $K$.
 
 \subsection{Continuation Across
 Frontiers}\label{continuation-across-frontiers}
@@ -2518,41 +2382,40 @@ is a virtual cut at the later frontier $f'$ on the same scope:
 \end{aligned}
 \]
 
-Reader-facing theorem summary:
-
+\paragraph*{Theorem Summary.}
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Status:} Machine-checked under the displayed
-  premises.
+  \textbf{Status.} Machine-checked under the displayed
+  assumptions.
 \item
-  \textbf{Claim:} appending the faithful continuation segment for
-  $(f,f']$ carries a virtual cut at $f$ to a virtual cut at $f'$ on the
+  \textbf{Claim.} Appending the valid continuation segment for
+  $(f,f']$ advances a virtual cut at $f$ to a virtual cut at $f'$ on the
   same scope.
 \item
-  \textbf{Premises:} $H$ is a wellformed source history, $\sigma$ is a
+  \textbf{Assumptions.} $H$ is a wellformed source history, $\sigma$ is a
   virtual cut at $f$ on $K$, and $\delta$ is exactly the continuation
   segment for $(f,f']$ on $K$.
 \item
-  \textbf{Boundary:} the conclusion is a replay-against-source equality
+  \textbf{Boundary.} The conclusion is a replay-against-source equality
   on $K$. It is not a whole-table claim, not a statement that a verifier
   accepts an extended certificate, and not a destination-apply claim.
 \end{itemize}
 
-The wellformedness premise is needed because the proof uses the
+The wellformedness condition is needed because the proof uses the
 source history's coordinate order to know that the events in $(f,f']$
-are exactly the ones between the two frontiers. Without it the interval
-could interleave with events outside it.
+are exactly the ones between the two frontiers. Without monotonicity,
+events outside the interval could interleave.
 
 \emph{Proof idea.} The argument is pointwise on a key $k \in K$. Replay
 of a sequence at $k$ is fixed by the latest replay event for $k$. If the
-continuation segment $\delta$ carries an event for $k$, then the latest
+continuation segment $\delta$ contains an event for $k$, then the latest
 $k$-event of $\sigma \mathbin{@} \delta$ lies in $\delta$ and is the
 change-data reading of the latest source event for $k$ in $(f,f']$. A
 Layer~0 source-state interval lemma equates that event's effect with
-$\Src(b_0,H,f')$ at $k$. If $\delta$ carries no event for $k$, replay of
+$\Src(b_0,H,f')$ at $k$. If $\delta$ contains no event for $k$, replay of
 $\sigma \mathbin{@} \delta$ at $k$ equals replay of $\sigma$ at $k$,
-which the premise equates with $\Src(b_0,H,f)$ at $k$. The same interval
+which the hypothesis equates with $\Src(b_0,H,f)$ at $k$. The same interval
 lemma equates that with $\Src(b_0,H,f')$ at $k$, because no event for
 $k$ in the interval means the source state for $k$ does not change
 across it. The interval lemma (that $\Src$ at $f'$ is determined by
@@ -2570,12 +2433,12 @@ holds on every key and $\delta$ is the continuation segment for
 $(f,f']$ on every key, then
 $\Apply(\sigma \mathbin{@} \delta) = \Src(b_0,H,f')$. This is the
 all-keys instance of the theorem above, machine-checked under the same
-premises. It does not let a \emph{scoped} continuation become
-whole-table without the all-keys premise. A key the source inserts outside $K$ within
-$(f,f']$ changes the table while leaving the scoped equality on $K$
-intact. Whole-table continuation requires the continuation segment for
-every key, just as whole-table specialization requires its claim-scope
-side condition.
+assumptions. A \emph{scoped} continuation cannot be promoted to a
+whole-table guarantee without this all-keys condition. A key the source
+inserts outside $K$ within $(f,f']$ changes the table while leaving the
+scoped equality on $K$ intact. Whole-table continuation requires the
+continuation segment for every key, just as whole-table specialization
+requires its claim-scope side condition.
 
 \subsection{Restriction to a
 Sub-Scope}\label{restriction-to-a-sub-scope}
@@ -2589,11 +2452,10 @@ $f$ on every sub-scope $K' \subseteq K$:
   \,\Longrightarrow\, \VCS(\sigma,K',f,H).
 \]
 
-This is machine-checked. It holds for any
-$K' \subseteq K$, and the $K' \subseteq K$ premise is exactly what it
-needs. Restriction is one-directional. \emph{Widening} a scope is
+This is machine-checked. It holds for any sub-scope $K' \subseteq K$.
+Restriction is strictly one-directional. \emph{Widening} a scope is
 unsound. For a key outside $K$ the cut certifies nothing about that
-key's state at $f$, so there is no sound lemma carrying a cut from $K$
+key's state at $f$, so there is no sound lemma extending a cut from $K$
 to a larger scope.
 
 The same fact holds through a certificate's accessors. If $C$ is a
@@ -2609,20 +2471,20 @@ narrowed scope $K'$:
 \end{aligned}
 \]
 
-This restricts the \emph{equality} a certificate already witnesses to a
-smaller scope. It is not a claim that a verifier accepts a restricted
-certificate. Producing and accepting a concrete certificate for $K'$ is
-an evidence-and-verifier obligation, not a consequence of the algebra.
+This restricts the equality already established by a certificate to a
+smaller scope. Validating a restricted certificate for $K'$ requires
+constructing and checking the corresponding evidence bundle, rather than
+following automatically from the restriction lemma alone.
 
 \subsection{Continuation Over an Accepted
 Certificate}\label{continuation-over-an-accepted-certificate}
 
 Continuation composes with the certificate layer. Layer~3
 (Section~\ref{accepted-certificate-soundness-layer-3}) proves that an
-accepted certificate, under faithful source observation, witnesses a
+accepted certificate, under accurate source observation, certifies a
 virtual cut at $\Frontier(C)$ on $\Scope(C)$. Appending a continuation
-segment carries that cut forward. Let $H$ be a wellformed source
-history. If a certificate $C$ is accepted under faithful source
+segment advances that cut forward. Let $H$ be a wellformed source
+history. If a certificate $C$ is accepted under accurate source
 observation, and $\delta$ is the continuation segment for
 $(\Frontier(C),f']$ on $\Scope(C)$, then the certified clean prefix
 followed by $\delta$ is a virtual cut at $f'$ on $\Scope(C)$:
@@ -2636,40 +2498,40 @@ followed by $\delta$ is a virtual cut at $f'$ on $\Scope(C)$:
 \end{aligned}
 \]
 
-Reader-facing theorem summary:
-
+\paragraph*{Theorem Summary.}
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Status:} Machine-checked under
-  checker-substrate obligations S1--S4
-  (Table~\ref{tab:checker-substrate}), faithful source observation,
+  \textbf{Status.} Machine-checked under
+  checker obligations S1--S4
+  (Table~\ref{tab:checker-substrate}), accurate source observation,
   source-history wellformedness, and exact continuation on
   $(\Frontier(C),f']$.
 \item
-  \textbf{Claim:} an accepted certificate's virtual cut continues, by
-  appending a faithful continuation segment, to a virtual cut at a later
+  \textbf{Claim.} An accepted certificate's virtual cut continues, by
+  appending a valid continuation segment, to a virtual cut at a later
   frontier.
 \item
-  \textbf{Premises:} certificate acceptance under checker-substrate
-  obligations S1--S4 (Table~\ref{tab:checker-substrate}) and faithful
-  source observation, as in Layer~3, a wellformed source history, and a
-  continuation segment that is exactly the source's change data on
+  \textbf{Assumptions.} Certificate acceptance under checker
+  obligations S1--S4 (Table~\ref{tab:checker-substrate}) and accurate
+  source observation, a wellformed source history, and a
+  continuation segment matching the source's change data on
   $(\Frontier(C),f']$.
 \item
-  \textbf{Boundary:} the conclusion is a replay equality on the
-  \emph{sequence} $\CleanPrefix(C) \mathbin{@} \delta$. It is not a
-  claim that the verifier accepts an ``extended certificate.''
+  \textbf{Boundary.} The conclusion is a replay equality on the
+  sequence $\CleanPrefix(C) \mathbin{@} \delta$. It is not a
+  claim that the verifier accepts an extended certificate.
   Acceptance for the longer prefix remains an evidence-and-verifier
   obligation.
 \end{itemize}
 
 The continuation segment $\delta$ is itself an external observation of
-the source. Its faithfulness to $H$ is a premise discharged at
-deployment, exactly as the certificate's own evidence is. The theorem
-composes the Layer~3 certificate theorem with continuation across
-frontiers. The composition leaves the trust assumptions for the
-certificate evidence and the continuation segment unchanged.
+the source. Its accuracy with respect to $H$ is an assumption that
+must be satisfied at deployment, exactly as the certificate's own
+evidence is. The theorem composes the Layer~3 certificate theorem with
+continuation across frontiers. The composition leaves the trust
+assumptions for the certificate evidence and the continuation segment
+unchanged.
 
 \subsection{Ongoing Operation as a Sequence of
 Cuts}\label{ongoing-operation-as-a-sequence-of-cuts}
@@ -2678,27 +2540,27 @@ Continuation segments chain. For a wellformed source history, the
 continuation segment for $(f,f']$ followed by the continuation segment
 for $(f',f'']$ is the continuation segment for $(f,f'']$. Wellformedness
 is again required. Only a non-decreasing source history guarantees that
-the two coordinate ranges meet at $f'$ without interleaving. A finite
-prefix of ongoing change data is a fold of continuation segments, and a virtual cut can be
-advanced one segment at a time or many at once with the same result.
+the two coordinate ranges meet at $f'$ without interleaving. Given a
+sequence of frontiers, the complete in-scope CDC segment over the combined
+interval can be split into segments at those frontiers. Appending the
+segments one at a time yields the same replay state as appending the
+combined segment.
 
 DBLog's replay-equivalence claim can therefore advance across frontiers.
 Each later cut consists of the original cut followed by the source
 changes committed in between.
 
 \smallskip
-\noindent\textbf{Re-chunking and re-running.} The same algebra explains
-what a fresh DBLog run produces. A virtual cut at $(K,f)$ is determined
-by the source state $\Src(b_0,H,f)$ alone. Any two replay sequences that
-are virtual cuts at $(K,f)$ agree on $K$, because both equal that one
-source state there. So a fresh \emph{wellformed} run (or a fresh
-accepted certificate, under the Layer~2 and Layer~3 theorems already
-proved) regenerates the same absolute source-side virtual cut on its
-scope, independent of any earlier cut and independent of any replica's
-state. Re-chunking is therefore an absolute, source-determined
-reconstruction of the per-key state (the regenerated clean prefix
-need not be the same event sequence, but replaying it reaches the same
-source state), not a differential repair against a destination.
+\noindent\textbf{Re-chunking and re-running.} This property also governs
+repeated runs. Because a virtual cut at $(K,f)$ depends solely on
+$\Src(b_0,H,f)$, any two replay sequences forming virtual cuts at $(K,f)$
+necessarily agree on $K$. A fresh wellformed run for the same scope and
+frontier reconstructs the same source state on that scope, independently
+of downstream replica state.
+Re-chunking is therefore an absolute, source-determined reconstruction of
+the per-key state (the regenerated replay prefix need not be identical,
+but replaying it yields the same source state), rather than a differential
+repair against a destination.
 Whether a destination then applies the regenerated prefix is a
 separate, sink-side question, which
 Section~\ref{sink-state-convergence-non-claim} leaves outside the
@@ -2712,15 +2574,8 @@ on the interval, which is an External observation assumption with a
 Deployment obligation to retain that interval. These results prove no
 whole-table claim beyond the explicit all-keys instance, no acceptance of an
 extended or restricted certificate, and no destination-state
-convergence. Continuation and restriction are machine-checked. The
-remaining certificate-algebra program is not proved here.
-
-\smallskip
-\noindent\textbf{Practitioner takeaway.} \emph{Appending the source
-changes in $(f,f']$ carries a virtual cut at $f$ to a cut at $f'$. A cut
-can also be restricted to a smaller scope. Re-running a wellformed
-backfill reconstructs the same source state on its scope, independent of
-the current destination state.}
+convergence. Continuation and restriction are machine-checked. Broader
+certificate-algebra extensions remain future work.
 
 \section{Limits on Sink-State Convergence}\label{sink-state-convergence-non-claim}
 
@@ -2734,11 +2589,12 @@ records receipt. A \emph{durable audit log} persists what was received.
 
 \subsection{Receipt ACK}\label{receipt-ack}
 
-A destination ACK says that some material was received. It does not say
-that the destination applied that material, applied it in order, applied
-it idempotently, applied it only once, or reached the source state at
-the certified frontier. Receipt could support a future stream-correctness
-result, but it does not establish sink-state correctness.
+A destination ACK confirms that data was received. It does not
+guarantee that the destination applied that data, applied it in order,
+executed it idempotently, processed it without duplicates, or converged
+to the source state at the certified frontier. Receipt could support a
+future stream-correctness result, but it does not establish sink-state
+correctness.
 
 \subsection{Durable Audit-Log
 Persistence}\label{durable-audit-log-persistence}
@@ -2767,15 +2623,15 @@ the following form:
 \]
 
 Whole-table sink convergence would additionally need the whole-table
-side conditions from Section~10. There is no path from ``DBLog accepted
-a certificate'' to ``the whole destination database is correct'' without
-both the source-side certificate theorem and a separate sink contract.
+side conditions from Section~10. Certificate acceptance alone does not
+guarantee that the destination database is correct. Establishing sink-state
+convergence requires both the source-side replay guarantee and an explicit
+sink execution contract.
 
-\smallskip
-\noindent\textbf{Practitioner takeaway.} \emph{A virtual cut relates
-replay to the source. An ACK establishes receipt, and an audit log
-establishes persistence. A destination-state guarantee additionally
-needs a fenced, idempotent apply contract and visible barrier evidence.}
+A virtual cut relates replay to the source. An ACK establishes
+receipt, while an audit log establishes persistence. Destination-state
+guarantees require a fenced, idempotent apply contract and visible barrier
+evidence.
 
 \section{Related Work}\label{related-work}
 
@@ -2789,11 +2645,11 @@ Adopters}\label{dblog-mechanism-lineage-and-production-adopters}
 
 The DBLog mechanism was introduced in the December 2019 Netflix Tech
 Blog post~\citep{dblog_netflix_blog} and described operationally in the
-2020 DBLog paper~\citep{andreakis2020dblog}. Online primary-key chunk reads
-are bracketed by source watermarks, chunk rows become refresh events,
-ordinary CDC events fill the log gaps, and stale refresh rows are
-suppressed when newer log evidence dominates them. We formalize the
-result as a certified virtual cut. The model uses a canonical,
+2020 DBLog paper~\citep{andreakis2020dblog}. It scans a table in
+primary-key chunks bracketed by log watermarks, discarding chunk rows
+whose keys overlap with CDC events anywhere within the window and
+emitting the remaining rows after the high watermark. We
+formalize this reconstructed state as a certified virtual cut. The model uses a canonical,
 non-overlapping chunk partition. The original mechanism's retried or
 overlapping chunk reads must first be normalized into that canonical
 form. That normalizer is not developed here
@@ -2803,16 +2659,16 @@ Debezium \citep{debezium_incremental_snapshot} and Apache Flink
 CDC \citep{flink_cdc_incremental_snapshot} include DBLog-style
 mechanisms in open-source CDC deployments. Debezium provides
 incremental snapshot modes, including signaling-table watermarks and
-read-only variants based on observed source coordinates such as MySQL
-GTIDs \citep{mysql_binlog}, MariaDB GTIDs \citep{mariadb_binlog}, or
-PostgreSQL log sequence numbers (LSNs) \citep{postgres_logical_decoding}.
+read-only variants that use executed GTID sets for MySQL and MariaDB
+and transaction-snapshot information for PostgreSQL
+\citep{debezium_read_only_snapshots}.
 Apache Flink CDC combines Debezium-style connectors with Flink's
 checkpointed streaming runtime \citep{carbone2015asynchronous},
-including parallel chunk readers.
+including parallel chunk readers \citep{flink_cdc_incremental_snapshot}.
 
 The formal result does not transfer to these systems automatically. A
 deployment must still establish source-log retention, watermark or
-coordinate semantics, frontier discipline, and faithful source
+coordinate semantics, frontier ordering, and accurate source
 observation.
 
 \subsection{Cuts, Frontiers, Watermarks, and
@@ -2828,12 +2684,12 @@ logical time and consistent cuts. Lamport's logical clocks
 
 A DBLog virtual cut is not a global consistent cut over all processes.
 It is an extensional replay-equality statement. Replaying a certified
-prefix yields the source state at a frontier on a key scope. The
-ordering substrate is a source-history coordinate, not a vector-clock
-model of inter-process channels. Each cut is point-in-time, fixed to one
-frontier, but the cuts chain. The source-side continuation result
-(Section~\ref{source-side-continuation-and-restriction}) advances a cut
-from one frontier to a later one, so a DBLog run corresponds to a
+prefix yields the source state at a frontier on a key scope.
+Ordering is governed by source-history coordinates instead of a
+vector-clock model of inter-process channels. Each cut is point-in-time,
+fixed to one frontier, but the cuts chain. The source-side continuation
+result (Section~\ref{source-side-continuation-and-restriction}) advances
+a cut from one frontier to a later one, so a DBLog run corresponds to a
 sequence of source-side virtual cuts rather than a single one.
 
 Stream-processing systems use adjacent terms. The Dataflow model
@@ -2848,18 +2704,20 @@ of operator state, and it is not an exactly-once processing claim.
 \subsection{CDC Infrastructure and Source-Log
 Semantics}\label{cdc-infrastructure-and-source-log-semantics}
 
-Durable transport and coordination systems such as LinkedIn Databus
+Data ingestion, transport, and coordination systems such as LinkedIn Databus
 \citep{databus}, Facebook Wormhole \citep{wormhole}, Kafka
 \citep{kafka}, Kafka Connect JDBC \citep{kafka_connect_jdbc}, and
-ZooKeeper \citep{zookeeper} show the operating environment for CDC
-backfills. They do not export the certificate object defined here.
+ZooKeeper \citep{zookeeper} provide infrastructure for copying,
+transporting, and coordinating data. Kafka Connect JDBC provides
+polling-based table ingestion. These systems do not provide the
+certificates described in this paper.
 
 Source-database documentation for MySQL binary logs and GTIDs
 \citep{mysql_binlog}, PostgreSQL logical decoding
 \citep{postgres_logical_decoding}, PostgreSQL logical replication
 \citep{postgres_logical_replication}, and MariaDB GTIDs
 \citep{mariadb_binlog} identifies the source-log ordering and row-event
-semantics that a deployment must establish for faithful source
+semantics that a deployment must establish for accurate source
 observation.
 
 Database-native and cloud CDC systems include PostgreSQL logical replication
@@ -2869,8 +2727,8 @@ Database-native and cloud CDC systems include PostgreSQL logical replication
 Striim \citep{striim}, Materialize's PostgreSQL ingestion
 \citep{materialize_postgres}, Databricks Lakeflow
 \citep{databricks_lakeflow}, and Microsoft SQL Server CDC
-\citep{microsoft_sqlserver_cdc}. These systems belong to the broader
-``initial load plus change stream'' family. Our result adds a finite
+\citep{microsoft_sqlserver_cdc}. These systems provide components or
+workflows for the broader ``initial load plus change stream'' family. Our result adds a finite
 replay-equivalence certificate for the DBLog form of this pattern,
 under explicit source-observation assumptions.
 
@@ -2906,28 +2764,29 @@ Online schema migration tools such as gh-ost \citep{ghost2016}, F1
 online schema change \citep{rae2013f1}, and lazy schema migration
 systems \citep{zeng2024slsm} share the operational pressure of copying or
 rewriting data while writes continue. Their overlap with DBLog is live
-backfill under concurrent writes. The formal target differs. We certify source-side replay equality for a
-DBLog-style backfill and its frontier advancement, not
-schema-state transitions or table swaps.
+backfill under concurrent writes. Our formal result specifically
+establishes source-side replay equality for a DBLog-style backfill and
+its frontier advancement, rather than schema-state transitions or table
+swaps.
 
-\subsection{Certificate Discipline}\label{certificate-discipline}
+\subsection{Related Verification Approaches}\label{sec:related-verification-approaches}
 
 The certificate layer follows the general idea of checkable evidence
 under explicit assumptions. Refinement mappings \citep{abadi1991refinement},
 proof-carrying code \citep{necula1997pcc}, translation validation
 \citep{pnueli1998translation}, version certificate recovery
 \citep{clark2024vcr}, and VerIso \citep{ghasemirad2025veriso} all help
-position the idea of a finite object that witnesses correctness relative
+position the idea of a finite object that establishes correctness relative
 to a model. Large mechanized artifacts such as seL4
 \citep{klein2009sel4}, CompCert \citep{leroy2009compcert}, TLA+
 \citep{lamport2002specifying}, Verdi \citep{wilcox2015verdi}, IronFleet
 \citep{hawblitzel2015ironfleet}, and Alloy \citep{jackson2002alloy} are
-cited for discipline and comparison, not as theorem sources.
+cited for methodological comparison, not as theorem sources.
 
 A DBLog certificate is not self-authenticating proof-carrying code, not
 a sink refinement map, and not an isolation-level conformance
-certificate. It is checkable evidence that, under faithful source
-observation, witnesses a wellformed DBLog run and therefore a virtual
+certificate. It is checkable evidence that, under accurate source
+observation, establishes a wellformed DBLog run and therefore certifies a virtual
 cut.
 
 \subsection{Scope of the Comparison}\label{title-promise-and-product-claim-boundaries}
@@ -2944,27 +2803,22 @@ named systems provide mechanism or deployment context. Applying the
 theorem to a concrete deployment requires its source-side assumptions,
 evidence semantics, and checker obligations to be established.
 
-\smallskip
-\noindent\textbf{Practitioner takeaway.} \emph{The named CDC products
-show where DBLog-style mechanisms are used. A product satisfies the
-theorem only after its source-log, coordinate, observation, and checker
-assumptions have been matched to the formal model.}
-
 \section{Future Work}\label{future-work}
 
 Section~\ref{source-side-continuation-and-restriction} proves
 continuation across frontiers and restriction to a sub-scope. The
 following extensions are not proved here.
 
-\subsection{Production Instantiation
-Paths}\label{production-instantiation-paths}
+\subsection{Concrete Deployment
+Paths}\label{sec:concrete-deployment-paths}
 
-Debezium read-only mode would replace source watermark writes with
-observed source-coordinate witnesses, such as MySQL executed-GTID-set
-advance, PostgreSQL LSN advance, or related source-log observations. A future
-theorem would need a refinement showing that such observed-coordinate
-brackets provide the same clean-prefix obligations as written
-watermarks, under an explicit coordinate advancement assumption.
+Extending the model to Debezium's read-only modes would replace source
+watermark writes with observed markers: executed GTID sets for MySQL and
+MariaDB, and transaction-snapshot information for PostgreSQL
+\citep{debezium_read_only_snapshots}. A future theorem would need a
+refinement showing that these markers establish the same clean-prefix
+obligations as written watermarks, under the corresponding source
+observation assumptions.
 
 Apache Flink CDC parallel chunk execution would require a parallel
 chunk-plan model, per-worker recovery assumptions, and a theorem
@@ -2972,11 +2826,11 @@ connecting checkpointed parallel execution to the same abstract
 wellformed run used here. The certificate would need enough evidence to
 recover the single clean prefix consumed by the proof.
 
-SELECT-at-LSN and source-positioned witness modes would replace low/high
-watermark intervals with a point witness at the source coordinate where
+SELECT-at-LSN and source-positioned read modes would replace low/high
+watermark intervals with a point coordinate at which
 a chunk read's row image is known to hold. These modes are attractive
 because they can avoid source writes, but they need new source-side
-assumptions and a new verification model for the point witness.
+assumptions and a new verification model for point-coordinate validation.
 
 \subsection{Sink Extensions}\label{sink-extensions}
 
@@ -2998,16 +2852,13 @@ or the whole-table specialization by itself.
 Extensions}\label{certificate-algebra-and-model-extensions}
 
 We prove restriction to a sub-scope and continuation across later
-frontiers by faithful CDC segments. Disjoint composition, concrete
-extended-certificate verification, and raw overlap/retry normalization
-remain future work.
-
-Real deployments also need a raw overlap/retry normalizer theorem. The
-current Layer 1 model uses a strict canonical chunk partition. A future
-normalizer would take overlapping or retried raw chunk reads and produce
-a canonical strict-partition certificate plus residual obligations, then
-prove that acceptance after normalization preserves the same virtual-cut
-claim.
+frontiers by valid CDC segments. Disjoint composition, concrete
+extended-certificate verification, and a raw overlap/retry normalizer
+remain open problems. The current Layer 1 model uses a strict canonical
+chunk partition. A future normalizer would take overlapping or retried
+raw chunk reads and produce a canonical strict-partition certificate plus
+residual obligations, then prove that acceptance after normalization
+preserves the same virtual-cut claim.
 
 Some notation and layer-boundary choices also remain open. A
 future paper might expose $\CleanPrefix(C,E)$ instead of
@@ -3019,75 +2870,55 @@ revision.
 
 \section{Verification Methodology}\label{verification-methodology}
 
-Table~\ref{tab:status-vocab} distinguishes machine-checked results from
-conditions supplied by a deployment or source connector. A result
-labeled \textbf{Machine-checked} is a theorem of the companion
-Isabelle/HOL development under the premises stated with that result.
-The paper gives the corresponding definition, theorem statement,
-premises, and proof explanation in the body.
+The companion Isabelle/HOL development checks the source and replay model,
+wellformed-run soundness, accepted-certificate soundness, whole-table
+specialization, continuation, and restriction. Each theorem holds under
+the assumptions stated with it.
 
-The formal development checks the source and replay model, the
-wellformed-run theorem, accepted-certificate soundness, the whole-table
-specialization, continuation, and restriction. It does not establish
-deployment facts such as source-log retention, coordinate ordering,
-frontier selection, or chunk scope. It also cannot determine whether a
-connector's CDC records and chunk-row images faithfully describe the
-real source. These conditions are labeled \textbf{Deployment
-obligation} or \textbf{External observation assumption} where they are
-used.
+A deployment must establish the assumed source-log retention, coordinate
+semantics, chunk coverage, and accuracy of CDC and chunk observations.
+The paper explains the definitions and proof arguments. Isabelle/HOL
+checks the formal derivations under their assumptions.
 
-The labels \textbf{Future work} and \textbf{Non-claim} identify results
-that are not part of the current theorem set. The first names an open
-extension. The second marks a property that the current result does not
-establish.
-
-The paper and formal development serve different roles. The paper gives
-the argument in reader-facing form. The Isabelle development checks the
-formal definitions and proofs against one another. Neither substitutes
-for the source and deployment assumptions stated with the theorems.
+Constructed models establish non-vacuity, including a non-trivial
+accepted-certificate instance. Counterexample fixtures illustrate failures
+when selected conditions are removed. Some conjuncts follow from the
+construction or other conditions, as documented in the formal development.
 
 \section{Conclusion}\label{conclusion}
 
-In this paper, we formalized the correctness property behind DBLog's
-live backfill mechanism. DBLog copies a table or a set of selected keys
-while the source continues accepting writes. It combines chunk reads
-with ordered CDC events without holding a long-lived table lock.
-Because different chunks may be read at different
-source-log coordinates, the collected rows do not form a physical
+In this paper, we formalized how DBLog combines chunk reads with captured
+changes and proved the correctness of the resulting replay.
+DBLog copies a table or a selected key range by reading
+data in chunks while the source continues accepting writes. Because chunks are 
+read at different source-log positions, the collected rows do not form a physical 
 snapshot.
 
-We define the resulting object as a certified virtual cut. A virtual
-cut holds when applying a finite replay prefix produces the same per-key
-state as the source at a chosen frontier on a chosen scope. The proof
-reasons separately about each key. For each key, the latest relevant
-replay event is
-either the latest retained source event through the frontier or the
-responsible chunk's refresh value or absence when no later source event
-supersedes it.
+We formalized this reconstructed state through the concept of a \textbf{virtual cut}. 
+A virtual cut establishes snapshot equivalence. Replaying the sequence of chunk 
+observations and streaming change events produces the exact state of the source database at 
+a designated commit-log frontier, for every key in scope. The cut is \emph{virtual} because 
+rows are read at different times without pausing updates or taking a physical snapshot.
+DBLog emits the events needed to reconstruct the source state downstream,
+without storing that state itself.
 
-We prove this equality for every wellformed DBLog run. We then connect
-the run-level theorem to accepted certificates under faithful source
-observation and explicit checker assumptions. A whole-table result
-follows when the certificate also covers the required anchor and
-post-anchor keys. Finally, we prove that a virtual cut can be advanced
-by appending the source events committed between two frontiers, and
-that an existing cut can be restricted to a smaller scope. All of these
+We prove that this equivalence holds for every protocol run satisfying 
+the stated run conditions. We then lift this guarantee 
+to inspectable certificates, showing that an independent checker can verify 
+the cut directly from recorded log evidence. When chunk reads cover the full 
+table, this per-key guarantee establishes whole-table snapshot equivalence, 
+accounting for both baseline rows and concurrent writes. We also prove that 
+appending subsequent CDC events advances an established cut forward to later 
+frontiers, and that cuts remain valid when restricted to smaller scopes. All 
 results are machine-checked in Isabelle/HOL.
 
 A certificate can expose missing or inconsistent evidence, but it
-cannot prove that a connector's observations are faithful to the real
-database. Source-log retention, coordinate semantics, frontier
-selection, and chunk-read consistency remain deployment conditions. The
-results also do not establish exactly-once delivery, applied destination
-state, correctness of a concrete verifier implementation, or
-correctness of a named product.
-
-The contribution is therefore a source-side account of DBLog. The
-initial backfill constructs a replay that matches the source at one
-frontier, and continued CDC processing advances that equality as the
-frontier moves. This gives the combination of initial load and change
-capture a finite correctness object and a machine-checked statement of
-the conditions under which it holds.
+cannot prove that a connector's observations accurately reflect the
+physical source database. Source-log retention, coordinate semantics,
+frontier selection, and chunk-read accuracy remain deployment
+obligations. The theorems establish source-side replay equivalence. 
+They do not assert downstream sink convergence or exactly-once delivery, 
+leaving concrete sink engines to separate verification.
 
 \section*{Formal Development and Tools}\label{formal-development-and-tools}
 
@@ -3110,10 +2941,9 @@ revising the exposition and developing the Isabelle/HOL
 formalization. The author directed the research, reviewed
 and edited all resulting text, and checked every definition,
 theorem statement, and proof. The author is the sole author
-of this paper and takes full responsibility for its content; the
+of this paper and takes full responsibility for its content. The
 AI assistants are tools, not authors.
 
-\clearpage
 \bibliography{refs}
 
 \end{document}

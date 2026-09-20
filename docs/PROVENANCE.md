@@ -20,7 +20,8 @@ when the paper and the newest artifact version differed.
 | v1 | 2026-05-29 | first posting |
 | v2 | 2026-06-12 | 31 pages, 5 figures; cites formal artifact 2.0 |
 | v3 | 2026-08-08 | 31 pages, 5 figures; updates the cited and ancillary formal artifact to 2.1, adopts the `Machine-checked` status label, and adds practitioner clarifications |
-| **v4** | **2026-08-13** | **current version**; 29 pages, 5 figures; readability revision with rewritten abstract, introduction, headings, and captions. The manuscript files in `paper/` are this version. |
+| v4 | 2026-08-13 | 29 pages, 5 figures; readability revision with rewritten abstract, introduction, headings, and captions |
+| **v5** | **2026-09-09** | **current version**; 28 pages, 5 figures; wording revision in every section, with a rewritten abstract and conclusion. Cites and carries formal artifact 2.1, unchanged. The manuscript files in `paper/` are this version. |
 
 ## Artifact versions
 
@@ -39,9 +40,9 @@ only when this repository became the paper's information hub.
 
 ArXiv v2 cites artifact version 2.0 (`10.5281/zenodo.20652511`), which was the
 current deposit when v2 was posted on 2026-06-12. Artifact 2.1 was published on
-2026-08-01. ArXiv v3 and v4 cite version 2.1, and both carry
+2026-08-01. ArXiv v3, v4 and v5 cite version 2.1, and all three carry
 `DBLog_Virtual_Cuts-2.1` as an ancillary directory. The `formal/` tree in this
-repository is byte-identical to that v4 ancillary and to the version 2.1 Zenodo
+repository is byte-identical to that v5 ancillary and to the version 2.1 Zenodo
 deposit.
 
 An external review of the 2.0 artifact found that one negative control in the
@@ -59,8 +60,9 @@ Version 2.1 makes two changes and no others:
 
 The nine headline theorem statements are identical across 2.0 and 2.1. Readers
 of arXiv v2 should expect the repaired fixture and regression theory when they
-compare its cited artifact with this repository. Readers of arXiv v3 or v4 see
-the same 2.1 corpus in the paper ancillary, Zenodo deposit, and `formal/` tree.
+compare its cited artifact with this repository. Readers of arXiv v3, v4 or v5
+see the same 2.1 corpus in the paper ancillary, Zenodo deposit, and `formal/`
+tree.
 
 ## Which identifier to cite
 

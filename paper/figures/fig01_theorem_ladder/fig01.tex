@@ -1,14 +1,9 @@
-% fig01.tex -- Set A (Architectural) Figure 1: theorem ladder + post-core extension map.
+% Theorem ladder and independent extensions.
 
 \centering
 \begin{tikzpicture}[setA]
 
-% ============================================================
 % Styles.
-%   Panel A (the core ladder): chip + slab + premise note.
-%   Panel B (the post-core extension map): titled cards with
-%   per-item status chips.
-% ============================================================
 \tikzset{
   ladderChip/.style={layerChip, minimum width=11mm, minimum height=11mm},
   ladderSlab/.style={block, text width=82mm, minimum height=11mm,
@@ -44,83 +39,72 @@
 
 \def\rowGap{2.5mm}
 
-% ============================================================
-% PANEL A -- the source-side core: the theorem ladder.
-% Layers 0--4, each rung machine-checked under its premises and
-% depending on the rung above it.
-% ============================================================
+% Source-side theorem ladder.
 \node[panelHd] (hdA) at (-5.5mm,10mm)
   {The theorem ladder: source-side core (Layers 0--4)};
 
-% --- LAYER 0/1 (two formal layers folded into one row) ---
+% Layers 0 and 1 share a row.
 \node[ladderChip] (c01) at (0,0) {0\,/\,1};
 \node[ladderSlab,  right=1.5mm of c01, anchor=west] (s01) {%
   \textbf{Source histories, replay events, abstract DBLog runs.}
   Defines $\WellformedRun$ (source-log retention, frontier discipline,
-  watermark consistency, chunk-read honesty).};
+  watermark consistency, chunk-read fidelity).};
 \node[ladderNote,  right=2mm   of s01]              (n01)                      {%
-  Premises: the wellformed-run model.\\
+  The wellformed-run model.\\
   WF carries the source-side observation\\
   obligations. The certificate's external-\\
   observation premise enters at Layer 3.};
 
-% --- LAYER 2 ---
+% Layer 2.
 \node[ladderChip,  below=\rowGap of c01.south, anchor=north] (c2)              {2};
 \node[ladderSlab,  right=1.5mm of c2,  anchor=west]          (s2)              {%
   \textbf{Source-side virtual-cut soundness.}
   $\WellformedRun \Rightarrow$ replay at frontier equals source on the
   run scope.};
 \node[ladderNote,  right=2mm   of s2]                        (n2)              {%
-  Same premises as L0/1. No \emph{new}\\
+  Same assumptions as L0/1. No \emph{new}\\
   assumptions (external observation\\
   is already inherited).};
 
-% --- LAYER 3 ---
+% Layer 3.
 \node[ladderChip,  below=\rowGap of c2.south, anchor=north]  (c3)              {3};
 \node[ladderSlab,  right=1.5mm of c3, anchor=west]           (s3)              {%
   \textbf{Accepted-certificate soundness.}
   $\Verify(C{,}E)=\Accept \,\land\, \FaithfulSourceObservation \,\land\,$
   checker substrate $\Rightarrow \VirtualCut(C, H)$.};
 \node[ladderNote,  right=2mm   of s3]                        (n3)              {%
-  Premises: Layer 2 $+$\\
+  Layer 2 $+$\\
   checker-substrate obligations $+$\\
   External observation assumption.};
 
-% --- LAYER 4 ---
+% Layer 4.
 \node[ladderChip,  below=\rowGap of c3.south, anchor=north]  (c4)              {4};
 \node[ladderSlab,  right=1.5mm of c4, anchor=west]           (s4)              {%
   \textbf{Whole-table specialization.}
   $\VirtualCut(C, H) \,\land\, \WholeTableClaimScope(C, H, b) \Rightarrow$
   unrestricted equality on the table at the frontier.};
 \node[ladderNote,  right=2mm   of s4]                        (n4)              {%
-  Premises: Layer 3 $+$\\
+  Layer 3 $+$\\
   $\WholeTableClaimScope(C, H, b)$.};
 
-% Dependency spine: lower depends on upper.
+% Dependency arrows: each lower layer depends on the layer above.
 \foreach \a/\b in {c01/c2, c2/c3, c3/c4} {
   \draw[-{Latex[length=5pt, width=4pt]}, gDark, line width=0.9pt]
     ([yshift=-0.2pt]\a.south)
     -- ([yshift=0.2pt]\b.north);
 }
 
-% ============================================================
-% Panel divider -- a neutral layout rule. NOT a status boundary:
-% the post-core area below is mixed-status, so no "future work"
-% line is drawn.
-% ============================================================
+% Divider between the theorem ladder and independent extensions. A layout
+% rule only, not a status boundary: the extensions below are mixed-status.
 \coordinate (divL) at ($(c4.south west) + (-6.5mm, -7mm)$);
 \coordinate (divR) at ($(n4.east |- divL) + (0.5mm, 0)$);
 \draw[gLight, line width=0.4pt] (divL) -- (divR);
 
-% ============================================================
-% PANEL B -- the post-core extension map.
-% Two independent extension paths off the core; NOT ladder
-% rungs. Each card carries per-item status chips.
-% ============================================================
+% Independent extensions.
 \node[panelHd, anchor=north west] (hdB) at ($(divL) + (0,-4mm)$)
   {Post-core extension map: independent extensions, \emph{not} ladder rungs};
 
-% --- Card 1: source-side virtual-cut algebra (extends Layer 2) ---
+% Source-side extension of Layer 2.
 \node[cardTtl, anchor=north west] (a-ttl) at ($(hdB.south west) + (1.5mm,-3.5mm)$)
   {Source-side virtual-cut algebra};
 \node[cardAtt, anchor=north west] (a-att) at ([yshift=-0.8mm]a-ttl.south west)
@@ -135,7 +119,7 @@
   {Disjoint composition, concrete extended-certificate verification,
    and raw overlap/retry normalization.};
 
-% --- Card 2: destination-side sink extensions (extend the certified prefix) ---
+% Destination-side extension of the certified prefix.
 \node[cardTtl, anchor=north west] (b-ttl) at ($(a-ttl.north west) + (72mm,0)$)
   {Destination-side sink extensions};
 \node[cardAtt, anchor=north west] (b-att) at ([yshift=-0.8mm]b-ttl.south west)
@@ -151,7 +135,7 @@
   {Strong sink-state barrier convergence needs a fenced, idempotent
    sink contract and visible apply-barrier evidence.};
 
-% Card background boxes (drawn behind the content).
+% Card backgrounds.
 \begin{scope}[on background layer]
   \node[cardBox, fit=(a-ttl)(a-att)(a-c1)(a-d1)(a-c2)(a-d2),
         inner sep=4pt] {};

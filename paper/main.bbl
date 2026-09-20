@@ -1,28 +1,9 @@
-\begin{thebibliography}{50}
+\begin{thebibliography}{51}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
-
-\bibitem[Andreakis and Papapanagiotou(2020)]{andreakis2020dblog}
-Andreas Andreakis and Ioannis Papapanagiotou.
-\newblock {DBLog}: A watermark based change-data-capture framework, 2020.
-\newblock Preprint arXiv:2010.12597.
-
-\bibitem[{Debezium Community}(2021)]{debezium_incremental_snapshot}
-{Debezium Community}.
-\newblock Incremental snapshots in {Debezium}.
-\newblock Debezium Blog,
-  \url{https://debezium.io/blog/2021/10/07/incremental-snapshots/}, 2021.
-
-\bibitem[{Apache Flink Community}(2026)]{flink_cdc_incremental_snapshot}
-{Apache Flink Community}.
-\newblock {Flink CDC} {MySQL} {CDC} connector: How incremental snapshot reading
-  works.
-\newblock Apache Flink CDC documentation (release-3.6),
-  \url{https://nightlies.apache.org/flink/flink-cdc-docs-release-3.6/docs/connectors/flink-sources/mysql-cdc/\#how-incremental-snapshot-reading-works},
-  2026.
 
 \bibitem[Andreakis and Papapanagiotou(2019)]{dblog_netflix_blog}
 Andreas Andreakis and Ioannis Papapanagiotou.
@@ -31,25 +12,36 @@ Andreas Andreakis and Ioannis Papapanagiotou.
   \url{https://netflixtechblog.com/dblog-a-generic-change-data-capture-framework-69351fb9099b},
   2019.
 
-\bibitem[{Oracle Corporation}(2026)]{mysql_binlog}
-{Oracle Corporation}.
-\newblock {MySQL} 8.0 reference manual: The binary log.
-\newblock \url{https://dev.mysql.com/doc/refman/8.0/en/binary-log.html};
-  \url{https://dev.mysql.com/doc/refman/8.0/en/replication-gtids.html}, 2026.
+\bibitem[Andreakis and Papapanagiotou(2020)]{andreakis2020dblog}
+Andreas Andreakis and Ioannis Papapanagiotou.
+\newblock {DBLog}: A watermark based change-data-capture framework, 2020.
+\newblock Preprint arXiv:2010.12597.
 
-\bibitem[{MariaDB Foundation}(2026)]{mariadb_binlog}
-{MariaDB Foundation}.
-\newblock {MariaDB} knowledge base: Binary log; global transaction {ID}.
-\newblock \url{https://mariadb.com/kb/en/binary-log/};
-  \url{https://mariadb.com/kb/en/gtid/}, 2026.
+\bibitem[Pechanec(2021)]{debezium_incremental_snapshot}
+Jiri Pechanec.
+\newblock Incremental snapshots in {Debezium}.
+\newblock Debezium Blog,
+  \url{https://debezium.io/blog/2021/10/07/incremental-snapshots/}, 2021.
 
-\bibitem[{PostgreSQL Global Development
-  Group}(2026{\natexlab{a}})]{postgres_logical_decoding}
-{PostgreSQL Global Development Group}.
-\newblock Chapter 47: Logical decoding.
-\newblock \url{https://www.postgresql.org/docs/current/logicaldecoding.html};
-  \url{https://www.postgresql.org/docs/current/logicaldecoding-output-plugin.html},
-  2026{\natexlab{a}}.
+\bibitem[{Apache Flink Community}(undated)]{flink_cdc_incremental_snapshot}
+{Apache Flink Community}.
+\newblock {Flink CDC} {MySQL} {CDC} connector: How incremental snapshot reading
+  works.
+\newblock Apache Flink CDC documentation (release-3.6),
+  \url{https://nightlies.apache.org/flink/flink-cdc-docs-release-3.6/docs/connectors/flink-sources/mysql-cdc/\#how-incremental-snapshot-reading-works},
+  undated.
+\newblock Online documentation. Accessed 8 September 2026.
+
+\bibitem[{Debezium Community}(undated)]{debezium_read_only_snapshots}
+{Debezium Community}.
+\newblock {Debezium} connector documentation: Read-only incremental snapshots
+  for {MySQL}, {MariaDB}, and {PostgreSQL}.
+\newblock Debezium reference documentation, version 3.6,
+  \url{https://debezium.io/documentation/reference/3.6/connectors/mysql.html\#mysql-read-only-incremental-snapshots};
+  \url{https://debezium.io/documentation/reference/3.6/connectors/mariadb.html\#mariadb-read-only-incremental-snapshots};
+  \url{https://debezium.io/documentation/reference/3.6/connectors/postgresql.html\#postgresql-read-only-incremental-snapshots},
+  undated.
+\newblock Online documentation. Accessed 8 September 2026.
 
 \bibitem[Carbone et~al.(2015)Carbone, F{\'o}ra, Ewen, Haridi, and
   Tzoumas]{carbone2015asynchronous}
@@ -140,13 +132,14 @@ Jay Kreps, Neha Narkhede, and Jun Rao.
 \newblock {Kafka}: A distributed messaging system for log processing.
 \newblock In \emph{Proceedings of the {NetDB} Workshop}, 2011.
 
-\bibitem[{Confluent}(2026)]{kafka_connect_jdbc}
+\bibitem[{Confluent}(undated)]{kafka_connect_jdbc}
 {Confluent}.
 \newblock {JDBC} source connector for {Confluent Platform}.
 \newblock
   \url{https://docs.confluent.io/kafka-connectors/jdbc/current/source-connector/overview.html};
   \url{https://docs.confluent.io/kafka-connectors/jdbc/current/source-connector/source_config_options.html},
-  2026.
+  undated.
+\newblock Online documentation. Accessed 8 September 2026.
 
 \bibitem[Hunt et~al.(2010)Hunt, Konar, Junqueira, and Reed]{zookeeper}
 Patrick Hunt, Mahadev Konar, Flavio~P. Junqueira, and Benjamin Reed.
@@ -154,75 +147,108 @@ Patrick Hunt, Mahadev Konar, Flavio~P. Junqueira, and Benjamin Reed.
 \newblock In \emph{Proceedings of the {USENIX} Annual Technical Conference},
   pages 145--158, 2010.
 
-\bibitem[{PostgreSQL Global Development
-  Group}(2026{\natexlab{b}})]{postgres_logical_replication}
-{PostgreSQL Global Development Group}.
-\newblock Chapter 29: Logical replication and architecture.
-\newblock
-  \url{https://www.postgresql.org/docs/current/logical-replication.html};
-  \url{https://www.postgresql.org/docs/current/logical-replication-architecture.html},
-  2026{\natexlab{b}}.
+\bibitem[{Oracle Corporation}(undated)]{mysql_binlog}
+{Oracle Corporation}.
+\newblock {MySQL} 8.0 reference manual: The binary log.
+\newblock \url{https://dev.mysql.com/doc/refman/8.0/en/binary-log.html};
+  \url{https://dev.mysql.com/doc/refman/8.0/en/replication-gtids.html},
+  undated.
+\newblock Online documentation. Accessed 8 September 2026.
 
-\bibitem[{Cockroach Labs}(2026)]{cockroachdb_changefeeds}
+\bibitem[{PostgreSQL Global Development
+  Group}(undated{\natexlab{a}})]{postgres_logical_decoding}
+{PostgreSQL Global Development Group}.
+\newblock {PostgreSQL} 18 documentation: Logical decoding.
+\newblock \url{https://www.postgresql.org/docs/18/logicaldecoding.html};
+  \url{https://www.postgresql.org/docs/18/logicaldecoding-output-plugin.html},
+  undated{\natexlab{a}}.
+\newblock Online documentation. Accessed 8 September 2026.
+
+\bibitem[{PostgreSQL Global Development
+  Group}(undated{\natexlab{b}})]{postgres_logical_replication}
+{PostgreSQL Global Development Group}.
+\newblock {PostgreSQL} 18 documentation: Logical replication and architecture.
+\newblock \url{https://www.postgresql.org/docs/18/logical-replication.html};
+  \url{https://www.postgresql.org/docs/18/logical-replication-architecture.html},
+  undated{\natexlab{b}}.
+\newblock Online documentation. Accessed 8 September 2026.
+
+\bibitem[{MariaDB Foundation}(undated)]{mariadb_binlog}
+{MariaDB Foundation}.
+\newblock {MariaDB} knowledge base: Binary log; global transaction {ID}.
+\newblock \url{https://mariadb.com/kb/en/binary-log/};
+  \url{https://mariadb.com/docs/server/ha-and-performance/standard-replication/gtid},
+  undated.
+\newblock Online documentation. Accessed 8 September 2026.
+
+\bibitem[{Cockroach Labs}(undated)]{cockroachdb_changefeeds}
 {Cockroach Labs}.
 \newblock {CockroachDB} changefeeds: {CREATE CHANGEFEED}, changefeed messages,
   how does a changefeed work.
 \newblock \url{https://www.cockroachlabs.com/docs/stable/create-changefeed};
   \url{https://www.cockroachlabs.com/docs/stable/changefeed-messages};
   \url{https://www.cockroachlabs.com/docs/stable/how-does-a-changefeed-work},
-  2026.
+  undated.
+\newblock Online documentation. Accessed 8 September 2026.
 
-\bibitem[{Amazon Web Services}(2026)]{aws_dms}
+\bibitem[{Amazon Web Services}(undated)]{aws_dms}
 {Amazon Web Services}.
 \newblock {AWS} database migration service: Full-load and {CDC} tasks.
 \newblock
   \url{https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Task.CDC.html};
   \url{https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.CustomizingTasks.TaskSettings.FullLoad.html},
-  2026.
+  undated.
+\newblock Online documentation. Accessed 8 September 2026.
 
-\bibitem[{Google Cloud}(2026)]{gcp_datastream}
+\bibitem[{Google Cloud}(undated)]{gcp_datastream}
 {Google Cloud}.
 \newblock Datastream: Manage backfill for the objects of a stream.
 \newblock
   \url{https://docs.cloud.google.com/datastream/docs/manage-backfill-for-the-objects-of-a-stream};
   \url{https://docs.cloud.google.com/datastream/docs/faq};
-  \url{https://docs.cloud.google.com/datastream/docs}, 2026.
+  \url{https://docs.cloud.google.com/datastream/docs}, undated.
+\newblock Online documentation. Accessed 8 September 2026.
 
-\bibitem[{Oracle}(2026{\natexlab{a}})]{oracle_goldengate}
+\bibitem[{Oracle}(undated{\natexlab{a}})]{oracle_goldengate}
 {Oracle}.
 \newblock Oracle {GoldenGate} online migration: Initial load plus {CDC}.
 \newblock
   \url{https://docs.oracle.com/en-us/iaas/database-migration/doc/set-oracle-goldengate-online-migrations.html};
   \url{https://blogs.oracle.com/dataintegration/online-migration-leveraging-oracle-goldengate},
-  2026{\natexlab{a}}.
+  undated{\natexlab{a}}.
+\newblock Online documentation. Accessed 8 September 2026.
 
-\bibitem[{Striim}(2026)]{striim}
+\bibitem[{Striim}(undated)]{striim}
 {Striim}.
 \newblock Striim: Initial-load and {CDC} replication.
 \newblock \url{https://www.striim.com/docs/en/getting-started.html};
-  \url{https://www.cockroachlabs.com/docs/stable/striim}, 2026.
+  \url{https://www.cockroachlabs.com/docs/stable/striim}, undated.
+\newblock Online documentation. Accessed 8 September 2026.
 
-\bibitem[{Materialize}(2026)]{materialize_postgres}
+\bibitem[{Materialize}(undated)]{materialize_postgres}
 {Materialize}.
 \newblock Materialize {PostgreSQL CDC} source: Ingest data.
 \newblock \url{https://materialize.com/docs/ingest-data/postgres/};
   \url{https://materialize.com/docs/ingest-data/postgres/postgres-debezium/},
-  2026.
+  undated.
+\newblock Online documentation. Accessed 8 September 2026.
 
-\bibitem[{Databricks}(2026)]{databricks_lakeflow}
+\bibitem[{Databricks}(undated)]{databricks_lakeflow}
 {Databricks}.
 \newblock Lakeflow declarative pipelines: Change data capture and snapshots /
   {AUTO CDC} {APIs}.
 \newblock
   \url{https://docs.databricks.com/aws/en/ldp/what-is-change-data-capture};
-  \url{https://docs.databricks.com/aws/en/ldp/cdc}, 2026.
+  \url{https://docs.databricks.com/aws/en/ldp/cdc}, undated.
+\newblock Online documentation. Accessed 8 September 2026.
 
-\bibitem[{Microsoft}(2025)]{microsoft_sqlserver_cdc}
+\bibitem[{Microsoft}(undated)]{microsoft_sqlserver_cdc}
 {Microsoft}.
 \newblock What is change data capture ({CDC})? -- {SQL Server}.
 \newblock
   \url{https://learn.microsoft.com/en-us/sql/relational-databases/track-changes/about-change-data-capture-sql-server},
-  2025.
+  undated.
+\newblock Online documentation. Accessed 8 September 2026.
 
 \bibitem[Mohan et~al.(1992)Mohan, Haderle, Lindsay, Pirahesh, and
   Schwarz]{mohan1992aries}
@@ -234,12 +260,13 @@ C.~Mohan, Don Haderle, Bruce Lindsay, Hamid Pirahesh, and Peter Schwarz.
 \newblock \doi{10.1145/128765.128770}.
 
 \bibitem[{PostgreSQL Global Development
-  Group}(2026{\natexlab{c}})]{postgres_pitr}
+  Group}(undated{\natexlab{c}})]{postgres_pitr}
 {PostgreSQL Global Development Group}.
-\newblock Continuous archiving and point-in-time recovery ({PITR}).
-\newblock
-  \url{https://www.postgresql.org/docs/current/continuous-archiving.html},
-  2026{\natexlab{c}}.
+\newblock {PostgreSQL} 18 documentation: Continuous archiving and point-in-time
+  recovery ({PITR}).
+\newblock \url{https://www.postgresql.org/docs/18/continuous-archiving.html},
+  undated{\natexlab{c}}.
+\newblock Online documentation. Accessed 8 September 2026.
 
 \bibitem[Ren et~al.(2016)Ren, Diamond, Abadi, and Thomson]{ren2016calc}
 Kun Ren, Thaddeus Diamond, Daniel~J. Abadi, and Alexander Thomson.
@@ -265,12 +292,13 @@ Atul Adya, Barbara Liskov, and Patrick O'Neil.
   Engineering ({ICDE})}, pages 67--78, 2000.
 \newblock \doi{10.1109/ICDE.2000.839388}.
 
-\bibitem[{Oracle}(2026{\natexlab{b}})]{oracle_flashback}
+\bibitem[{Oracle}(undated{\natexlab{b}})]{oracle_flashback}
 {Oracle}.
 \newblock Using {Oracle Flashback} technology: Flashback query / {AS OF SCN}.
 \newblock
   \url{https://docs.oracle.com/en/database/oracle/oracle-database/19/adfns/flashback.html},
-  2026{\natexlab{b}}.
+  undated{\natexlab{b}}.
+\newblock Online documentation. Accessed 8 September 2026.
 
 \bibitem[{GitHub}(2016)]{ghost2016}
 {GitHub}.

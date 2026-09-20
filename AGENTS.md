@@ -12,9 +12,9 @@ cite, or check* — so this file gives you the source hierarchy, the exact
 vocabulary, the theorem index, and the claims this work does **not** make.
 
 **Links.** Paper: [arXiv:2605.31475](https://arxiv.org/abs/2605.31475)
-([v4 abs](https://arxiv.org/abs/2605.31475v4) ·
-[v4 PDF](https://arxiv.org/pdf/2605.31475v4) ·
-[in-repo PDF](paper/dblog_virtual_cuts_v4.pdf) ·
+([v5 abs](https://arxiv.org/abs/2605.31475v5) ·
+[v5 PDF](https://arxiv.org/pdf/2605.31475v5) ·
+[in-repo PDF](paper/dblog_virtual_cuts_v5.pdf) ·
 [sources](paper/)). Formal development:
 [`formal/`](formal/) · archived at Zenodo
 [10.5281/zenodo.21732790](https://doi.org/10.5281/zenodo.21732790) (version 2.1)
@@ -64,7 +64,7 @@ statement in `formal/`.
 |---|---|---|---|
 | `formal/*.thy`, `formal/ROOT`, `formal/document/` | Isabelle/HOL session `DBLog_Virtual_Cuts`, 38 theories | yes, for proofs | **no — byte-frozen** |
 | `formal/README.md` | artifact README (theory-by-theory) | yes, for artifact description | no |
-| `paper/main.tex`, `paper/refs.bib`, `paper/figures/` | arXiv v4 sources | yes, for the paper | only by the author |
+| `paper/main.tex`, `paper/refs.bib`, `paper/figures/` | arXiv v5 sources | yes, for the paper | only by the author |
 | `paper/*.pdf` | built paper | yes | no |
 | `docs/THEOREMS.md` | verbatim theorem statements, premises, non-claims | no (derived) | yes, by the author |
 | `docs/PROVENANCE.md` | paper/artifact version history and DOIs | no (derived) | yes, by the author |
@@ -114,6 +114,13 @@ statement in `formal/`.
 | **faithful source observation** (`FSO`) | The assumption that the observation the checker consumes reflects the real source. External; not checkable from the certificate. |
 | **deployment obligations** | The conditions a real deployment must establish (faithful CDC delivery, watermark placement, retention). Hypotheses here, not results. |
 | **anchor domain / whole-table scope** | The Layer 4 machinery specializing a claim to an entire table. |
+
+**Paper wording.** arXiv v5 writes *accurate source observation* for `FSO`, and
+*fidelity* (refresh fidelity, chunk-read fidelity, CDC coverage and fidelity)
+where arXiv v4 wrote *faithful source observation*, *honesty* and
+*faithfulness*. The symbol `FSO` is unchanged, and the Isabelle sources keep the
+identifier `faithful_source_observation`. This file and `docs/` keep the v4
+words.
 
 Avoid: “snapshot” unqualified (the point is that there is no physical
 snapshot), “guarantees”, “ensures exactly-once”, “proves DBLog correct”.
@@ -206,20 +213,20 @@ conservative extension over a provably non-empty set with `linorder` and
 
 | Object | Identifier |
 |---|---|
-| Paper | arXiv:2605.31475 — v1 29 May, v2 12 Jun, v3 8 Aug, **v4 13 Aug 2026** (current). 29 pages, cs.DB + cs.LO, CC BY 4.0. |
+| Paper | arXiv:2605.31475 — v1 29 May, v2 12 Jun, v3 8 Aug, v4 13 Aug, **v5 9 Sep 2026** (current). 28 pages, cs.DB + cs.LO, CC BY 4.0. |
 | Artifact, latest | Zenodo `10.5281/zenodo.21732790` (version 2.1, 1 Aug 2026), repo tag `v2.1` |
 | Artifact, concept DOI | `10.5281/zenodo.20389696` — always resolves to the newest version |
 | Artifact, earlier | `10.5281/zenodo.20652511` (2.0) · `10.5281/zenodo.20389697` (1.0) |
 | Prior work | 2020 DBLog paper arXiv:2010.12597; Netflix Tech Blog, Dec 2019 |
 
-ArXiv v2 cites artifact 2.0 (`10.5281/zenodo.20652511`). ArXiv v3 and v4 cite
-artifact 2.1 (`10.5281/zenodo.21732790`) and carry the same 2.1 corpus as an
-ancillary directory. The repository's `formal/` tree is byte-identical to that
-v4 ancillary and the Zenodo deposit. Version 2.1 repairs a Layer 3 negative
+ArXiv v2 cites artifact 2.0 (`10.5281/zenodo.20652511`). ArXiv v3, v4 and v5
+cite artifact 2.1 (`10.5281/zenodo.21732790`) and carry the same 2.1 corpus as
+an ancillary directory. The repository's `formal/` tree is byte-identical to
+that v5 ancillary and the Zenodo deposit. Version 2.1 repairs a Layer 3 negative
 control that failed to materialize its run (a vacuous control found by external
 review) and adds a regression theory pinning the repair. **The nine headline
 theorem statements are unchanged**; the repaired control's own statement is
-strictly strengthened. Do not describe v2 as citing 2.1, or v3/v4 as citing
+strictly strengthened. Do not describe v2 as citing 2.1, or v3/v4/v5 as citing
 2.0.
 
 BibTeX entries for both objects are in [`README.md`](README.md#citing) and

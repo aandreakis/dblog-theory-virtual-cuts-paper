@@ -26,7 +26,7 @@ work verifies a model of the mechanism, not any implementation of it.
 
 | Path | What it is |
 |---|---|
-| [`paper/`](paper/) | Manuscript sources from the exact arXiv v4 bundle (`main.tex`, `refs.bib`, `main.bbl`, TikZ figure sources), plus arXiv's built PDF. |
+| [`paper/`](paper/) | Manuscript sources from the exact arXiv v5 bundle (`main.tex`, `refs.bib`, `main.bbl`, TikZ figure sources), plus arXiv's built PDF. |
 | [`formal/`](formal/) | The Isabelle/HOL session `DBLog_Virtual_Cuts` — **byte-identical to the archived Zenodo artifact**. Do not edit. |
 | [`formal/README.md`](formal/README.md) | The artifact's own README: theory-by-theory contents, witnesses, release metadata. |
 | [`docs/THEOREMS.md`](docs/THEOREMS.md) | The nine theorems: verbatim statements, premises, and per-theorem “what this does *not* say”. |
@@ -35,8 +35,8 @@ work verifies a model of the mechanism, not any implementation of it.
 
 ## The paper
 
-- **arXiv v4:** [abs](https://arxiv.org/abs/2605.31475v4) · [PDF](https://arxiv.org/pdf/2605.31475v4) — 29 pages, 5 figures, cs.DB + cs.LO, CC BY 4.0.
-- **In this repository:** [`paper/dblog_virtual_cuts_v4.pdf`](paper/dblog_virtual_cuts_v4.pdf) — arXiv's own build of v4, carrying its margin stamp.
+- **arXiv v5:** [abs](https://arxiv.org/abs/2605.31475v5) · [PDF](https://arxiv.org/pdf/2605.31475v5) — 28 pages, 5 figures, cs.DB + cs.LO, CC BY 4.0.
+- **In this repository:** [`paper/dblog_virtual_cuts_v5.pdf`](paper/dblog_virtual_cuts_v5.pdf) — arXiv's own build of v5, carrying its margin stamp.
 - **Build it yourself** (figures are TikZ sources under `paper/figures/`; no external image files are needed):
 
   ```bash
@@ -73,11 +73,11 @@ diff -r DBLog_Virtual_Cuts-2.1 formal   # no output means identical
 
 | | Paper | Formal development |
 |---|---|---|
-| Current | [arXiv:2605.31475v4](https://arxiv.org/abs/2605.31475v4) (13 Aug 2026) | `2.1` — [10.5281/zenodo.21732790](https://doi.org/10.5281/zenodo.21732790), repo tag [`v2.1`](../../tree/v2.1) |
-| Previous | [v3](https://arxiv.org/abs/2605.31475v3) (8 Aug 2026) · [v2](https://arxiv.org/abs/2605.31475v2) (12 Jun 2026) · [v1](https://arxiv.org/abs/2605.31475v1) (29 May 2026) | `2.0` — [10.5281/zenodo.20652511](https://doi.org/10.5281/zenodo.20652511), tag [`v2.0`](../../tree/v2.0) · `1.0` — [10.5281/zenodo.20389697](https://doi.org/10.5281/zenodo.20389697), tag [`v1.0`](../../tree/v1.0) |
+| Current | [arXiv:2605.31475v5](https://arxiv.org/abs/2605.31475v5) (9 Sep 2026) | `2.1` — [10.5281/zenodo.21732790](https://doi.org/10.5281/zenodo.21732790), repo tag [`v2.1`](../../tree/v2.1) |
+| Previous | [v4](https://arxiv.org/abs/2605.31475v4) (13 Aug 2026) · [v3](https://arxiv.org/abs/2605.31475v3) (8 Aug 2026) · [v2](https://arxiv.org/abs/2605.31475v2) (12 Jun 2026) · [v1](https://arxiv.org/abs/2605.31475v1) (29 May 2026) | `2.0` — [10.5281/zenodo.20652511](https://doi.org/10.5281/zenodo.20652511), tag [`v2.0`](../../tree/v2.0) · `1.0` — [10.5281/zenodo.20389697](https://doi.org/10.5281/zenodo.20389697), tag [`v1.0`](../../tree/v1.0) |
 | Always-latest DOI | — | [10.5281/zenodo.20389696](https://doi.org/10.5281/zenodo.20389696) (concept DOI) |
 
-ArXiv v4 cites formal artifact 2.1 and carries `DBLog_Virtual_Cuts-2.1` as an
+ArXiv v5 cites formal artifact 2.1 and carries `DBLog_Virtual_Cuts-2.1` as an
 ancillary directory. That ancillary, the Zenodo 2.1 deposit, and this
 repository's `formal/` tree are byte-identical. The concept DOI always resolves
 to the newest version; version DOIs name exact bytes — cite the version DOI when
