@@ -19,8 +19,8 @@ Databases”**, arXiv version 5
 pdflatex main && bibtex main && pdflatex main && pdflatex main
 ```
 
-No external image files are required — every figure is TikZ, drawn from the
-shared palette and `tikzset` defined in the preamble of `main.tex`.
+No external image files are required. Every figure is TikZ and uses the shared
+palette and `tikzset` defined in the preamble of `main.tex`.
 
 ## Differences from the arXiv submission tarball
 

@@ -9,14 +9,16 @@ Sources for the paper **“A Theoretical Study of DBLog: Certified Virtual Cuts
 for a Snapshot-Equivalent Replay of Live Databases”** (Andreas Andreakis, 2026)
 and the machine-checked Isabelle/HOL development that accompanies it.
 
-The paper supplies a correctness object for the DBLog change-data-capture
-backfill mechanism — a *certified virtual cut* — and proves nine headline
-theorems about it in Isabelle/HOL, `sorry`-free and axiom-free. Each result
-holds under the premises its own statement names; deployment obligations and
-the faithfulness of the source observation are hypotheses, not results. The
-work verifies a model of the mechanism, not any implementation of it.
+The paper formalizes the backfill mechanism of DBLog, a change-data-capture
+framework. It defines the *certified virtual cut*: a finite bundle of log events
+and chunk reads whose replay reaches the source state at a chosen log position,
+for the keys being copied. It proves nine main theorems about it in
+Isabelle/HOL, without `sorry` and without axioms. Each theorem holds under the
+assumptions stated in it. The deployment obligations and the faithful source
+observation are assumptions. The proofs do not establish them. The work
+verifies a model of the mechanism. It does not verify any implementation.
 
-**Links** — [paper on arXiv](https://arxiv.org/abs/2605.31475) ·
+**Links:** [paper on arXiv](https://arxiv.org/abs/2605.31475) ·
 [archived artifact (Zenodo)](https://doi.org/10.5281/zenodo.21732790) ·
 [theorem index](docs/THEOREMS.md) ·
 [provenance](docs/PROVENANCE.md) ·
@@ -27,17 +29,17 @@ work verifies a model of the mechanism, not any implementation of it.
 | Path | What it is |
 |---|---|
 | [`paper/`](paper/) | Manuscript sources from the exact arXiv v5 bundle (`main.tex`, `refs.bib`, `main.bbl`, TikZ figure sources), plus arXiv's built PDF. |
-| [`formal/`](formal/) | The Isabelle/HOL session `DBLog_Virtual_Cuts` — **byte-identical to the archived Zenodo artifact**. Do not edit. |
+| [`formal/`](formal/) | The Isabelle/HOL session `DBLog_Virtual_Cuts`, **byte-identical to the archived Zenodo artifact**. Do not edit. |
 | [`formal/README.md`](formal/README.md) | The artifact's own README: theory-by-theory contents, witnesses, release metadata. |
-| [`docs/THEOREMS.md`](docs/THEOREMS.md) | The nine theorems: verbatim statements, premises, and per-theorem “what this does *not* say”. |
+| [`docs/THEOREMS.md`](docs/THEOREMS.md) | The nine main theorems: verbatim statements, assumptions, and what each theorem does *not* say. |
 | [`docs/PROVENANCE.md`](docs/PROVENANCE.md) | Paper and artifact version history, DOIs. |
-| [`AGENTS.md`](AGENTS.md) | Orientation file for AI assistants and automated readers. |
+| [`AGENTS.md`](AGENTS.md) | Guide for AI assistants and automated readers. |
 
 ## The paper
 
-- **arXiv v5:** [abs](https://arxiv.org/abs/2605.31475v5) · [PDF](https://arxiv.org/pdf/2605.31475v5) — 28 pages, 5 figures, cs.DB + cs.LO, CC BY 4.0.
-- **In this repository:** [`paper/dblog_virtual_cuts_v5.pdf`](paper/dblog_virtual_cuts_v5.pdf) — arXiv's own build of v5, carrying its margin stamp.
-- **Build it yourself** (figures are TikZ sources under `paper/figures/`; no external image files are needed):
+- **arXiv v5:** [abs](https://arxiv.org/abs/2605.31475v5) · [PDF](https://arxiv.org/pdf/2605.31475v5). 28 pages, 5 figures, cs.DB + cs.LO, CC BY 4.0.
+- **In this repository:** [`paper/dblog_virtual_cuts_v5.pdf`](paper/dblog_virtual_cuts_v5.pdf), arXiv's own build of v5 with its margin stamp.
+- **Build it yourself.** The figures are TikZ sources under `paper/figures/`, so no external image files are needed:
 
   ```bash
   cd paper && pdflatex main && bibtex main && pdflatex main && pdflatex main
@@ -46,7 +48,8 @@ work verifies a model of the mechanism, not any implementation of it.
 ## The proofs
 
 Requires [Isabelle2025-2](https://isabelle.in.tum.de/). The session depends only
-on `HOL-Library` from the distribution — no Archive of Formal Proofs entry.
+on `HOL-Library` from the distribution. It needs no Archive of Formal Proofs
+entry.
 
 ```bash
 isabelle build -d formal DBLog_Virtual_Cuts
@@ -55,8 +58,8 @@ isabelle build -d formal DBLog_Virtual_Cuts
 All 38 theories check `sorry`-free, and the session builds its own PDF
 document, which requires a LaTeX toolchain. To check proofs without LaTeX,
 remove the `document = pdf, document_output = "output"` options from
-`formal/ROOT` first — session options take precedence over `-o document=false`
-on the command line.
+`formal/ROOT` first, because session options take precedence over
+`-o document=false` on the command line.
 
 Nothing is axiomatized: there is no `axiomatization`, `typedecl` or `consts`
 declaration, and the single `typedef` (the source coordinate type) is a
@@ -73,15 +76,16 @@ diff -r DBLog_Virtual_Cuts-2.1 formal   # no output means identical
 
 | | Paper | Formal development |
 |---|---|---|
-| Current | [arXiv:2605.31475v5](https://arxiv.org/abs/2605.31475v5) (9 Sep 2026) | `2.1` — [10.5281/zenodo.21732790](https://doi.org/10.5281/zenodo.21732790), repo tag [`v2.1`](../../tree/v2.1) |
-| Previous | [v4](https://arxiv.org/abs/2605.31475v4) (13 Aug 2026) · [v3](https://arxiv.org/abs/2605.31475v3) (8 Aug 2026) · [v2](https://arxiv.org/abs/2605.31475v2) (12 Jun 2026) · [v1](https://arxiv.org/abs/2605.31475v1) (29 May 2026) | `2.0` — [10.5281/zenodo.20652511](https://doi.org/10.5281/zenodo.20652511), tag [`v2.0`](../../tree/v2.0) · `1.0` — [10.5281/zenodo.20389697](https://doi.org/10.5281/zenodo.20389697), tag [`v1.0`](../../tree/v1.0) |
-| Always-latest DOI | — | [10.5281/zenodo.20389696](https://doi.org/10.5281/zenodo.20389696) (concept DOI) |
+| Current | [arXiv:2605.31475v5](https://arxiv.org/abs/2605.31475v5) (9 Sep 2026) | `2.1`, [10.5281/zenodo.21732790](https://doi.org/10.5281/zenodo.21732790), repo tag [`v2.1`](../../tree/v2.1) |
+| Previous | [v4](https://arxiv.org/abs/2605.31475v4) (13 Aug 2026) · [v3](https://arxiv.org/abs/2605.31475v3) (8 Aug 2026) · [v2](https://arxiv.org/abs/2605.31475v2) (12 Jun 2026) · [v1](https://arxiv.org/abs/2605.31475v1) (29 May 2026) | `2.0`, [10.5281/zenodo.20652511](https://doi.org/10.5281/zenodo.20652511), tag [`v2.0`](../../tree/v2.0) · `1.0`, [10.5281/zenodo.20389697](https://doi.org/10.5281/zenodo.20389697), tag [`v1.0`](../../tree/v1.0) |
+| Always-latest DOI | | [10.5281/zenodo.20389696](https://doi.org/10.5281/zenodo.20389696) (concept DOI) |
 
 ArXiv v5 cites formal artifact 2.1 and carries `DBLog_Virtual_Cuts-2.1` as an
 ancillary directory. That ancillary, the Zenodo 2.1 deposit, and this
 repository's `formal/` tree are byte-identical. The concept DOI always resolves
-to the newest version; version DOIs name exact bytes — cite the version DOI when
-the bytes matter. Full history: [`docs/PROVENANCE.md`](docs/PROVENANCE.md).
+to the newest version. A version DOI names exact bytes. Cite the version DOI
+when you refer to specific files. Full history:
+[`docs/PROVENANCE.md`](docs/PROVENANCE.md).
 
 ## Citing
 
@@ -119,22 +123,23 @@ GitHub's *Cite this repository* button reads [`CITATION.cff`](CITATION.cff).
 
 ## Background
 
-- **DBLog: A Watermark Based Change-Data-Capture Framework** — Andreakis &
+- **DBLog: A Watermark Based Change-Data-Capture Framework**, Andreakis &
   Papapanagiotou, 2020. [arXiv:2010.12597](https://arxiv.org/abs/2010.12597).
-  The original mechanism paper; this work is its theoretical follow-up.
-- **DBLog: A Generic Change-Data-Capture Framework** — Netflix Tech Blog, 2019.
+  This is the original paper on the mechanism. The present work is its
+  theoretical follow-up.
+- **DBLog: A Generic Change-Data-Capture Framework**, Netflix Tech Blog, 2019.
   [Post](https://netflixtechblog.com/dblog-a-generic-change-data-capture-framework-69351fb9099b).
 
 ## Licence
 
-- **Paper text and figures** (`paper/`, `docs/`) — Creative Commons Attribution
+- **Paper text and figures** (`paper/`, `docs/`): Creative Commons Attribution
   4.0 International (CC BY 4.0), matching the arXiv posting. See
   [`LICENSES/CC-BY-4.0.txt`](LICENSES/CC-BY-4.0.txt).
-- **Isabelle/HOL development** (`formal/`) — BSD 3-Clause. See
+- **Isabelle/HOL development** (`formal/`): BSD 3-Clause. See
   [`LICENSE`](LICENSE), a copy of `formal/LICENSE` as it ships inside the
   archived deposit.
 
 ## Author
 
-**Andreas Andreakis** — independent researcher.
+**Andreas Andreakis**, independent researcher.
 [ORCID 0009-0003-9025-9402](https://orcid.org/0009-0003-9025-9402)
