@@ -78,7 +78,7 @@ diff -r DBLog_Virtual_Cuts-2.1 formal   # no output means identical
 |---|---|---|
 | Current | [arXiv:2605.31475v5](https://arxiv.org/abs/2605.31475v5) (9 Sep 2026) | `2.1`, [10.5281/zenodo.21732790](https://doi.org/10.5281/zenodo.21732790), repo tag [`v2.1`](../../tree/v2.1) |
 | Previous | [v4](https://arxiv.org/abs/2605.31475v4) (13 Aug 2026) · [v3](https://arxiv.org/abs/2605.31475v3) (8 Aug 2026) · [v2](https://arxiv.org/abs/2605.31475v2) (12 Jun 2026) · [v1](https://arxiv.org/abs/2605.31475v1) (29 May 2026) | `2.0`, [10.5281/zenodo.20652511](https://doi.org/10.5281/zenodo.20652511), tag [`v2.0`](../../tree/v2.0) · `1.0`, [10.5281/zenodo.20389697](https://doi.org/10.5281/zenodo.20389697), tag [`v1.0`](../../tree/v1.0) |
-| Always-latest DOI | none | [10.5281/zenodo.20389696](https://doi.org/10.5281/zenodo.20389696) (concept DOI) |
+| Always latest | [arXiv:2605.31475](https://arxiv.org/abs/2605.31475) | [10.5281/zenodo.20389696](https://doi.org/10.5281/zenodo.20389696) (concept DOI) |
 
 ArXiv v5 cites formal artifact 2.1 and carries `DBLog_Virtual_Cuts-2.1` as an
 ancillary directory. That ancillary, the Zenodo 2.1 deposit, and this
