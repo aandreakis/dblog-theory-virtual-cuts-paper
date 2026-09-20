@@ -40,9 +40,9 @@ source-log retention, frontier discipline, watermark consistency, chunk-read
 fidelity. This is the main assumption of the development. The paper's
 *Deployment obligations* are what a real system must do to satisfy it.
 
-**Does not say.** Anything about a *certificate*. This is the run-level result.
-It also says nothing about keys outside `scope_of R` and nothing at frontiers
-other than `frontier_of R`.
+**Does not say.** Nothing about a *certificate*. This is the run-level result.
+Nothing about keys outside `scope_of R`, and nothing at frontiers other than
+`frontier_of R`.
 
 ### 2. `accepted_certificate_implies_wellformed_run`
 
@@ -133,10 +133,10 @@ an assumption. The verifier's `Accept` does not establish it.
 
 ## Source-side continuation and restriction
 
-These theorems are the machine-checked source-side part of the paper's
-certificate algebra. Each is an equality between `Apply` and `Src`. They are
-proved on top of the core ladder, and the proofs do not go back into the run
-model.
+These theorems are the source-side part of the paper's certificate algebra:
+restriction to a sub-scope and continuation across later frontiers. Each is an
+equality between `Apply` and `Src`. They are proved on top of the core ladder,
+and the proofs do not go back into the run model.
 
 ### 5. `virtual_cut_state_continuation`
 
@@ -291,5 +291,5 @@ isabelle build -d formal DBLog_Virtual_Cuts
 The second grep anchors to command position on purpose. The word
 `axiomatization` occurs in two documentation passages of
 `formal/Source_History.thy`, and both say that none is used. An unanchored
-search reports those prose lines and appears to contradict the claim it is
-meant to check.
+search therefore reports those prose lines and appears to contradict the claim
+it is meant to check.

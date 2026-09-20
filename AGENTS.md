@@ -40,12 +40,12 @@ virtual cut**, a finite bundle of CDC events and chunk reads whose replay
 reaches the same per-key state as the source at a chosen frontier on a chosen
 key scope. Nine main theorems are machine-checked in Isabelle/HOL under the
 assumptions stated in them. The development's other theorems are closed
-witnesses and fixtures. They exercise the definitions and show that the
-theorems are not vacuous.
+witnesses and fixtures. Constructed witnesses establish non-vacuity, and
+counterexample fixtures show what fails when a condition is removed.
 
 ## 2. Source precedence
 
-When sources disagree, the higher entry wins. If you find a disagreement,
+When sources disagree, the higher entry takes precedence. If you find a disagreement,
 report it. It is a defect.
 
 1. **`formal/`**: the Isabelle/HOL sources. They are kernel-checked and decide
@@ -75,12 +75,12 @@ statement in `formal/`.
 
 1. **Do not edit anything under `formal/`.** Those bytes are identical to the
    archived Zenodo deposit (version 2.1, DOI `10.5281/zenodo.21732790`). An edit
-   breaks the correspondence between this repository and the archival record,
-   and nothing in the repository would show it. If you believe you have found a
-   defect, report it as an issue with a reproduction. Artifact defects are fixed
+   breaks the correspondence between this repository and the archival record.
+   If you believe you have found a defect, report it as an issue with a
+   reproduction. Artifact defects are fixed
    by publishing a new version. They are not fixed by patching this tree.
 2. **Never state a theorem without its assumptions.** Each of the nine main
-   theorems holds only under its stated assumptions. This work does not claim
+   theorems holds under the assumptions stated with it. This work does not claim
    “DBLog is correct”. It does claim “under the wellformed-run assumptions, the
    clean prefix of a DBLog run replays to the source state at its frontier on
    its scope”. Use the paper's status label **Machine-checked**. The label
@@ -94,8 +94,8 @@ statement in `formal/`.
 5. **Do not run `isabelle build` unless the user asked for a build.** A full
    check takes minutes and needs Isabelle2025-2 plus a LaTeX toolchain. Read
    the sources instead.
-6. **Cite exact identifiers.** Use the version DOI when you refer to specific
-   files, and the concept DOI when you mean “the artifact”. See §9.
+6. **Cite exact identifiers.** Use the version DOI when you need the exact
+   bytes, and the concept DOI when you mean “the artifact”. See §9.
 
 ## 5. Vocabulary (use these words as defined here)
 
@@ -114,13 +114,15 @@ statement in `formal/`.
 | **wellformed run** (`WF`) | The run-model obligations: log retention, frontier discipline, watermark consistency, chunk-read fidelity. |
 | **faithful source observation** (`FSO`) | The assumption that the observation the checker consumes reflects the real source. It is external and cannot be checked from the certificate. |
 | **deployment obligations** | The conditions a real deployment must establish (faithful CDC delivery, watermark placement, retention). They are assumptions of the theorems. The proofs do not establish them. |
-| **anchor domain / whole-table scope** | The Layer 4 machinery specializing a claim to an entire table. |
+| **anchor domain / whole-table scope** | The Layer 4 definitions that specialize a claim to an entire table. |
 
-**Paper wording.** arXiv v5 writes *accurate source observation* for `FSO`.
-arXiv v4 wrote *faithful source observation*. The symbol `FSO` is unchanged, and
-the Isabelle sources keep the identifier `faithful_source_observation`. This
-file and `docs/` keep *faithful source observation*, which matches the Isabelle
-identifier.
+**Paper wording.** arXiv v5 writes *accurate source observation* for `FSO`, and
+*fidelity* (refresh fidelity, chunk-read fidelity, CDC coverage and fidelity)
+where arXiv v4 wrote *faithful source observation*, *honesty* and
+*faithfulness*. The symbol `FSO` is unchanged, and the Isabelle sources keep the
+identifier `faithful_source_observation`. This file and `docs/` write
+*chunk-read fidelity* as v5 does. Elsewhere they keep *faithful* and
+*faithfulness*, as arXiv v4 and the Isabelle identifier do.
 
 Avoid: “snapshot” without qualification (there is no physical snapshot),
 “guarantees”, “ensures exactly-once”, “proves DBLog correct”.
@@ -243,5 +245,5 @@ over composing your own.
 | Does this prove my pipeline is correct? | No. See §7 above. |
 | How does DBLog work? | Paper §“The DBLog Mechanism” and the 2020 paper (arXiv:2010.12597) |
 | What are the assumptions? | Paper's *Deployment obligations* and *External observation assumption*, and `formal/README.md` → *Main results* |
-| Why 38 theories for 9 theorems? | Fourteen carry definitions and results. Twenty-four are constructed witnesses and fixtures which show that the theorems are not vacuous. `formal/README.md` → *Contents* |
+| Why 38 theories for 9 theorems? | Fourteen carry definitions and results. Twenty-four are constructed witnesses and counterexample fixtures. `formal/README.md` → *Contents* |
 | What changed between artifact versions? | §9 above and `docs/PROVENANCE.md` |

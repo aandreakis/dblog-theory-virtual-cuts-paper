@@ -34,7 +34,7 @@ paper cited an older artifact version than the newest one.
 Each version is also a tag in this repository: [`v1.0`](../../../tree/v1.0),
 [`v2.0`](../../../tree/v2.0), [`v2.1`](../../../tree/v2.1). The tags preserve
 the layout each version was published with. The corpus moved under `formal/`
-when this repository became the paper's information hub.
+only when this repository became the paper's information hub.
 
 ## The 2.0 / 2.1 history
 
@@ -74,8 +74,8 @@ tree.
 
 - **Concept DOI** `10.5281/zenodo.20389696`: use it for "the formal
   development" in general. It resolves to the newest version.
-- **Version DOI**: use it when you refer to specific files, for example in a
-  build log, a review, a reproduction, or a claim about a theory file.
+- **Version DOI**: use it when you need the exact bytes, for example in a
+  build log, a review, a reproduction, or a claim about a specific theory file.
 - **This repository**: use it for reading and browsing. The Zenodo deposit
   remains the archival identifier. The repository is a mirror with added
   context.
