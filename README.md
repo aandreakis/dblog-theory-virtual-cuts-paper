@@ -4,6 +4,7 @@
 
 [![Paper (arXiv)](https://img.shields.io/badge/paper-arXiv%3A2605.31475-b31b1b)](https://arxiv.org/abs/2605.31475)
 [![Artifact 2.1 DOI](https://img.shields.io/badge/artifact-10.5281%2Fzenodo.21732790-1682D4)](https://doi.org/10.5281/zenodo.21732790)
+[![Blog Post](https://img.shields.io/badge/blog-aandreakis.com-0e7c66)](https://aandreakis.com/posts/snapshot-equivalent-replay-of-a-live-table-without-taking-a-full-snapshot)
 
 Sources for the paper **“A Theoretical Study of DBLog: Certified Virtual Cuts
 for a Snapshot-Equivalent Replay of Live Databases”** (Andreas Andreakis, 2026)
@@ -19,6 +20,7 @@ the source observation are assumptions. The proofs do not establish them. The wo
 verifies a model of the mechanism. It does not verify any implementation.
 
 **Links:** [paper on arXiv](https://arxiv.org/abs/2605.31475) ·
+[companion blog post](https://aandreakis.com/posts/snapshot-equivalent-replay-of-a-live-table-without-taking-a-full-snapshot) ·
 [archived artifact (Zenodo)](https://doi.org/10.5281/zenodo.21732790) ·
 [theorem index](docs/THEOREMS.md) ·
 [provenance](docs/PROVENANCE.md) ·
